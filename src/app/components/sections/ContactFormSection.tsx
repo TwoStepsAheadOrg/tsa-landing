@@ -146,7 +146,7 @@ export function ContactFormSection() {
                 </div>
                 <div className="flex flex-col gap-1">
                   <dt className="uppercase tracking-[0.16em] text-[color:var(--lt-mute-2)]">Office</dt>
-                  <dd className="text-[color:var(--lt-mute)]">서울 강남구 압구정로 306</dd>
+                  <dd className="text-[color:var(--lt-mute)]">서울 마포구 양화로 186</dd>
                 </div>
               </dl>
             </div>
