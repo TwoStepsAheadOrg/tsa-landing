@@ -26,7 +26,7 @@ export function OfferingsSection() {
           </Reveal>
         </div>
 
-        <div className="mt-14 grid grid-cols-1 border-y border-[color:var(--lt-line)] sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-14 grid grid-cols-1 border-y border-[color:var(--lt-line)] sm:grid-cols-2 lg:grid-cols-5">
           {OFFERINGS.items.map((item, i) => (
             <Reveal key={item.num} delay={0.05 * i} className="h-full">
               <article className="h-full border-b border-[color:var(--lt-line)] px-0 py-10 sm:px-8 lg:border-b-0 lg:border-r lg:px-10 lg:first:pl-0 lg:last:border-r-0 lg:last:pr-0">

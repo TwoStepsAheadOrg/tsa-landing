@@ -23,10 +23,10 @@ export const CAREERS_NAV_LINKS = [
 export const HERO = {
   /** headline: highlight=true 세그먼트에 형광 마크 */
   headline: [
-    { text: '기업의 반복 업무를\n', highlight: false },
-    { text: 'AI로 전환합니다', highlight: true },
+    { text: '생성형 AI가 가장 좋아하는\n', highlight: false },
+    { text: '콘텐츠를 만듭니다', highlight: true },
   ],
-  sub: '투스텝스어헤드는 AI 상담·업무 자동화와 SaaS·관제·CRM 시스템을 설계하고 구축합니다.\n진단부터 개발, 운영과 교육까지 한 팀이 맡습니다.',
+  sub: '14개국 생성형 AI 플랫폼의 질의 데이터를 수집·분석하는 유일한 회사입니다.\nAI가 인용하고 추천하는 콘텐츠 제작부터 AI 상담·업무 자동화, SaaS·관제·CRM 구축, 교육까지 한 팀이 맡습니다.',
   primaryCta: { label: '무료 상담받기', href: '#contact' },
   secondaryCta: { label: '사례 보기', href: '#work' },
   /** CTA 아래 신뢰 뱃지 — 대표 확인 사실(2026-08-10) */
@@ -36,32 +36,37 @@ export const HERO = {
 /** 첫 화면에서 회사의 규모와 운영 경험을 바로 이해할 수 있는 핵심 지표. */
 export const STATS = [
   { v: '15+', k: '국내외 프로젝트 수행' },
-  { v: '3개국', k: '미국 · 일본 · 프랑스 프로젝트' },
-  { v: '4개', k: '직접 운영하는 자체 서비스' },
+  { v: '14개국', k: '생성형 AI 플랫폼 질의 데이터 수집·분석' },
+  { v: '5개', k: '직접 운영하는 자체 서비스' },
   { v: '24시간', k: 'AI 고객 응대 시스템 운영' },
 ];
 
 export const OFFERINGS = {
-  title: '기업에 필요한 AI를\n실제 업무에 적용합니다.',
-  lead: '기술 시연에 그치지 않고 현장에서 사용할 수 있는 시스템을 구축합니다.',
+  title: '생성형 AI에 발견되는 콘텐츠부터\n현장에서 돌아가는 AI까지.',
+  lead: '14개국 생성형 AI 플랫폼의 질의 데이터를 기반으로 콘텐츠를 만들고, 기술 시연에 그치지 않는 시스템을 구축합니다.',
   items: [
     {
       num: '01',
+      title: '생성형 AI 검색 콘텐츠',
+      desc: 'ChatGPT·Gemini·네이버 AI 브리핑 등이 인용하고 추천하는 콘텐츠를 질의 데이터 기반으로 제작합니다.',
+    },
+    {
+      num: '02',
       title: 'AI 업무 자동화',
       desc: '반복 상담, 문서 처리와 데이터 업무를 AI 에이전트로 자동화합니다.',
     },
     {
-      num: '02',
+      num: '03',
       title: 'SaaS·업무 시스템',
       desc: '관제, 예약, CRM 등 현장 업무에 맞는 웹과 앱을 개발합니다.',
     },
     {
-      num: '03',
+      num: '04',
       title: 'AI 고객 응대',
       desc: '전화와 채팅 문의를 24시간 처리하고 필요한 내용을 담당자에게 연결합니다.',
     },
     {
-      num: '04',
+      num: '05',
       title: '기업 AI 교육',
       desc: '리더 특강부터 부서별 실무 워크숍과 개발자 교육까지 진행합니다.',
     },
@@ -162,10 +167,12 @@ export const SOLUTIONS = {
     ],
   },
   sub: {
-    name: '사장노트',
-    tagline: '우리 가게의 AI 검색 성적표',
-    desc: '플레이스 링크나 가게 이름을 입력하면 AI 검색 노출을 분석하고, 오늘 해야 할 일을 정리해 줍니다.',
-    url: 'https://www.sajangnote.kr',
+    name: '보임',
+    tagline: '네이버 AI 브리핑·플레이스 모니터링',
+    desc: '브랜드와 검색어를 입력하면 네이버 AI 브리핑 속 브랜드 언급과 인용 출처, 지역 검색의 플레이스 순위를 매일 관측합니다.',
+    url: 'https://boim.twostepsahead.co.kr',
+    host: 'boim.twostepsahead.co.kr',
+    preview: { src: '/product/boim-preview.webp', alt: '보임 네이버 AI 브리핑 무료 진단 화면' },
   },
 };
 
@@ -257,8 +264,8 @@ export const CAREERS = {
 };
 
 export const STUDIO = {
-  heading: '모든 프로젝트는\n현장을 이해하는 것부터 시작합니다.',
-  lead: '현장의 업무 흐름과 반복되는 문제를 이해한 뒤, 필요한 곳에만 AI와 시스템을 적용합니다. 직접 서비스를 운영해 본 경험이 있기 때문에 구축 이후까지 함께 설계할 수 있습니다.',
+  heading: '생성형 AI가 무엇을 답하는지,\n데이터로 먼저 봅니다.',
+  lead: '투스텝스어헤드는 14개국 생성형 AI 플랫폼의 질의 데이터를 수집·분석하는 유일한 회사입니다. 그 데이터로 AI가 인용하고 추천하는 콘텐츠를 만들고, 현장의 업무 흐름에 맞는 AI와 시스템을 구축합니다. 직접 서비스를 운영해 본 경험이 있기 때문에 구축 이후까지 함께 설계할 수 있습니다.',
   team: [
     {
       role: '대표',
@@ -282,7 +289,8 @@ export const SERVICES = [
   { name: '우주콜', tagline: '전화를 대신 받는 AI 직원', url: 'https://www.woojoocall.com' },
   { name: '텔링사주', tagline: '캐릭터와 채팅으로 보는 AI 사주', url: 'https://telling.ai.kr' },
   { name: '마이크로웨이브', tagline: '글로벌 인플루언서 마케팅', url: 'https://microwave.ai.kr' },
-  { name: '사장노트', tagline: '우리 가게의 AI 검색 성적표', url: 'https://www.sajangnote.kr' },
+  { name: '보임', tagline: '네이버 AI 브리핑·플레이스 모니터링', url: 'https://boim.twostepsahead.co.kr' },
+  { name: '어웨이에디션', tagline: '외국인 방문객을 위한 도시 가이드', url: 'https://awayedition.com' },
 ];
 
 export const STATEMENT = '납품하고 떠나지 않습니다.\n운영까지 함께합니다.';

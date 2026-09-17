@@ -86,7 +86,7 @@ export function SolutionsSection() {
             </a>
           </Reveal>
 
-          {/* 서브 — 사장노트 */}
+          {/* 서브 — 보임 */}
           <Reveal delay={0.14} className="h-full">
             <a
               href={sub.url}
@@ -106,13 +106,13 @@ export function SolutionsSection() {
               </p>
               <div className="mt-6 overflow-hidden rounded-xl border border-[rgba(78,61,216,0.18)] bg-white shadow-[0_8px_24px_rgba(36,27,89,0.08)]">
                 <img
-                  src="/product/sajangnote-preview.webp"
-                  alt="사장노트 가게 AI 검색 분석 화면"
+                  src={sub.preview.src}
+                  alt={sub.preview.alt}
                   className="block h-auto w-full"
                 />
               </div>
               <span className="mt-auto inline-flex items-center gap-1.5 pt-6 font-dc-mono text-[12px] uppercase tracking-[0.08em] text-[color:var(--lt-ink)]">
-                sajangnote.kr
+                {sub.host}
                 <ArrowUpRight className="h-3.5 w-3.5 text-[color:var(--lt-mute-2)] transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </span>
             </a>
