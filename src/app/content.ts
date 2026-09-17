@@ -37,7 +37,7 @@ export const HERO = {
 export const STATS = [
   { v: '15+', k: '국내외 프로젝트 수행' },
   { v: '3개국', k: '미국 · 일본 · 프랑스 프로젝트' },
-  { v: '5개', k: '직접 운영하는 자체 서비스' },
+  { v: '4개', k: '직접 운영하는 자체 서비스' },
   { v: '24시간', k: 'AI 고객 응대 시스템 운영' },
 ];
 
@@ -283,7 +283,6 @@ export const SERVICES = [
   { name: '텔링사주', tagline: '캐릭터와 채팅으로 보는 AI 사주', url: 'https://telling.ai.kr' },
   { name: '마이크로웨이브', tagline: '글로벌 인플루언서 마케팅', url: 'https://microwave.ai.kr' },
   { name: '사장노트', tagline: '우리 가게의 AI 검색 성적표', url: 'https://www.sajangnote.kr' },
-  { name: '투니', tagline: '손으로 그리는 콘텐츠 제작 앱', url: 'https://tooni.xyz' },
 ];
 
 export const STATEMENT = '납품하고 떠나지 않습니다.\n운영까지 함께합니다.';

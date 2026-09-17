@@ -105,7 +105,7 @@ export function StudioServicesSection() {
           <h3 className="mt-20 font-dc-display text-[1.5rem] font-bold tracking-[-0.02em] text-[color:var(--lt-ink)]">직접 운영하는 서비스</h3>
         </Reveal>
 
-        <div className="mt-7 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
+        <div className="mt-7 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {SERVICES.map((s, i) => (
             <Reveal key={s.name} delay={0.06 * i} className="h-full">
               <a
