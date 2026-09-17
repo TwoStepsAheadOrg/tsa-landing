@@ -289,7 +289,7 @@ export const SERVICES = [
   { name: '우주콜', tagline: '전화를 대신 받는 AI 직원', url: 'https://www.woojoocall.com' },
   { name: '텔링사주', tagline: '캐릭터와 채팅으로 보는 AI 사주', url: 'https://telling.ai.kr' },
   { name: '마이크로웨이브', tagline: '글로벌 인플루언서 마케팅', url: 'https://microwave.ai.kr' },
-  { name: '보임', tagline: '네이버 AI 브리핑·플레이스 모니터링', url: 'https://boim.twostepsahead.co.kr' },
+  { name: '보임', tagline: '네이버 AI 브리핑 모니터링', url: 'https://boim.twostepsahead.co.kr' },
   { name: '어웨이에디션', tagline: '외국인 방문객을 위한 도시 가이드', url: 'https://awayedition.com' },
 ];
 
