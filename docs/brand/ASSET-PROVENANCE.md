@@ -27,6 +27,23 @@ RIN은 AI 가상 인물이며 메이크업 전후 이미지는 AI 캐릭터의 �
 
 새 두 사각형 심벌은 이번 리브랜딩의 절차적 벡터 디자인입니다. `src/app/components/BrandMark.tsx`와 `scripts/make-icons.py`가 동일한 좌표를 사용합니다. 로고·아이콘·OG는 이 도형, 색상, 로컬 서체로 구성하며 외부 스톡 이미지가 들어가지 않습니다.
 
+### 후속 히어로 개편
+
+- `public/brand/data-to-creative.webp`: 내장 image_gen으로 새로 생성한 데이터→콘텐츠 개념 시각화입니다. 실제 제품 화면이나 측정 성과 그래프가 아닙니다. 투명 PNG 원본(1374×1145)을 같은 크기의 WebP로 인코딩했으며 내용·색·구성을 편집하지 않았습니다.
+- 생성 원본과 요청문 기록: 작업 원장의 `outputs/tsa-rebrand-20261010/revision-v2/assets/data-to-creative.png` 및 `IMAGE-PROMPT.md`. 요청문 사본은 [IMAGE-PROMPT-20261010.md](IMAGE-PROMPT-20261010.md)에 보존합니다.
+- RIN 히어로는 기존 `rin-portrait.webp`를 그대로 인스타그램 스타일의 휴대폰 화면 안에 표시합니다. 화면은 HTML/CSS로 만든 콘텐츠 시안이며 실제 계정 화면 캡처가 아닙니다. RIN의 AI 가상 모델 표기를 유지하고, 가짜 계정 handle·좋아요·팔로워·인증 배지를 넣지 않습니다.
+
+### 전설이래 Instagram 사례
+
+사용자가 지정한 [@jeonseolirae](https://www.instagram.com/jeonseolirae/)의 실제 공개 릴스 썸네일을 재사용합니다. 두 1080×1920 원본을 크기·구성 변경 없이 WebP로 인코딩했으며 웹에서도 9:16 전체 프레임을 표시합니다.
+
+| 자산 | 공개 원본 |
+|---|---|
+| `public/brand/jeonseolirae-sokcho.webp` | [속초 이름의 유래 릴스](https://www.instagram.com/jeonseolirae/reel/DeK6_C9RRSo/) |
+| `public/brand/jeonseolirae-ulsan.webp` | [울산바위 릴스](https://www.instagram.com/jeonseolirae/reel/DeJz1gexUdQ/) |
+
+실관측 원장: `outputs/tsa-rebrand-20261010/revision-v2/research/INSTAGRAM-LIVE-DOM.json`. 2026-10-10 공개 화면에서 팔로워 699명, 릴스 10편을 확인했습니다. 대표 릴스 표시 조회수는 각각 6.4만·1.2만입니다. 10편의 표시 조회수 합은 101,359로 계산되며, 일부 표시값이 반올림되어 있어 공개 카피에는 **약 10.1만**으로 씁니다. 합계는 고유 시청자 수가 아니며 광고 집행 여부, 전환 실적, 운영 기간을 입증하지 않습니다.
+
 ## 서체
 
 Pretendard Regular/SemiBold는 SIL Open Font License 1.1로 제공됩니다. 실제 포함된 저작권 고지와 라이선스 전문은 [`public/fonts/OFL-Pretendard.txt`](../../public/fonts/OFL-Pretendard.txt)에 보존되어 있습니다. 웹에서는 자체 호스팅한 WOFF2를 사용하고, 아이콘·OG 생성기는 같은 WOFF2를 읽습니다. 배포할 때 이 라이선스 파일도 함께 유지합니다.

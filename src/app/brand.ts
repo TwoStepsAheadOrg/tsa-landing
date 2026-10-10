@@ -131,6 +131,34 @@ export const CHANNELS = [
     href: "https://www.youtube.com/@orbit.minute/videos",
   },
 ];
+export const INSTAGRAM_CASE = {
+  name: "전설이래",
+  handle: "@jeonseolirae",
+  href: "https://www.instagram.com/jeonseolirae/",
+  description:
+    "지명에 담긴 지역 전설을 1분 AI 애니메이션으로 만듭니다. 캐릭터·장면·목소리를 AI로 제작하고, Instagram 릴스로 연재합니다.",
+  metrics: [
+    { value: "6.4만", label: "대표 릴스 표시 조회수" },
+    { value: "약 10.1만", label: "공개 릴스 10편 조회수 합산" },
+    { value: "699", label: "공개 프로필 팔로워" },
+  ],
+  sourceNote:
+    "2026.10.10 공개 프로필·릴스 화면 기준. 합산 조회수는 릴스 10편의 표시값을 더한 수치이며 일부 반올림되어 있습니다.",
+  reels: [
+    {
+      title: "속초라는 이름이 바위 세금 때문?",
+      image: "/brand/jeonseolirae-sokcho.webp",
+      href: "https://www.instagram.com/jeonseolirae/reel/DeK6_C9RRSo/",
+      views: "6.4만",
+    },
+    {
+      title: "울산바위가 원래 울산 바위?",
+      image: "/brand/jeonseolirae-ulsan.webp",
+      href: "https://www.instagram.com/jeonseolirae/reel/DeJz1gexUdQ/",
+      views: "1.2만",
+    },
+  ],
+};
 export const PROCESS = [
   {
     title: "질문을 찾습니다",

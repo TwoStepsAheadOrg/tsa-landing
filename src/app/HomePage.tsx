@@ -1,6 +1,9 @@
 import { useState } from "react";
-import { ArrowDown, ArrowUpRight, Plus, Download } from "lucide-react";
-import { BRAND, SERVICE_ITEMS, WORKS, CHANNELS, PROCESS } from "./brand";
+import {
+  ArrowDown, ArrowUpRight, Plus, Download, Heart, MessageCircle,
+  Send, Bookmark, MoreHorizontal,
+} from "lucide-react";
+import { BRAND, SERVICE_ITEMS, WORKS, CHANNELS, PROCESS, INSTAGRAM_CASE } from "./brand";
 import { SiteNav } from "./components/SiteNav";
 import { SiteFooter } from "./components/SiteFooter";
 import { BrandMark } from "./components/BrandMark";
@@ -10,41 +13,48 @@ function HeroArt() {
   return (
     <div
       className="hero-art"
-      aria-label="TSA의 실제 작업: Plurank 데이터와 AI 모델 RIN"
+      aria-label="데이터에서 콘텐츠로: 인스타그램 스타일의 화면에 담은 AI 모델 RIN"
     >
-      <div className="art-backdrop" aria-hidden="true"></div>
-      <figure className="hero-portrait">
+      <figure className="hero-data-artwork">
         <img
-          src="/brand/rin-portrait.webp"
-          alt="TSA가 만든 AI 뷰티 캐릭터 RIN"
-          width="800"
-          height="1200"
+          src="/brand/data-to-creative.webp"
+          alt="질문과 데이터를 콘텐츠로 연결하는 과정을 표현한 파란 유리 구조물"
+          width="1374"
+          height="1145"
         />
-        <figcaption>
-          <span>RIN</span>AI model & character
-        </figcaption>
+        <figcaption>데이터가 콘텐츠로.</figcaption>
       </figure>
-      <figure className="hero-data">
-        <div className="art-caption">
-          <span>Plurank</span>
-          <span>AI visibility</span>
+      <figure className="hero-phone">
+        <div className="phone-shell">
+          <div className="phone-speaker" aria-hidden="true"></div>
+          <div className="phone-feed">
+            <div className="phone-feed-top">
+              <span>Instagram</span>
+              <small>콘텐츠 시안</small>
+            </div>
+            <div className="phone-post-author">
+              <span className="phone-avatar" aria-hidden="true">R</span>
+              <div><strong>RIN</strong><span>AI model & character</span></div>
+              <MoreHorizontal size={19} aria-hidden="true" />
+            </div>
+            <img
+              className="phone-post-image"
+              src="/brand/rin-portrait.webp"
+              alt="TSA가 만든 AI 가상 뷰티 캐릭터 RIN의 미러 포트레이트"
+              width="800"
+              height="1200"
+            />
+            <div className="phone-post-actions" aria-hidden="true">
+              <Heart /><MessageCircle /><Send /><Bookmark />
+            </div>
+            <div className="phone-post-caption">
+              <strong>RIN</strong><span>하나의 인물, 이어지는 이야기.</span>
+            </div>
+          </div>
+          <div className="phone-home-indicator" aria-hidden="true"></div>
         </div>
-        <img
-          src="/brand/plurank.webp"
-          alt="Plurank AI 가시성 분석 서비스 화면 예시"
-          width="754"
-          height="753"
-        />
-        <figcaption>데이터가 콘텐츠의 시작점이 됩니다.</figcaption>
+        <figcaption>RIN · AI 가상 모델</figcaption>
       </figure>
-      <div className="art-stamp">
-        <BrandMark />
-        <span>
-          Data meets
-          <br />
-          creative.
-        </span>
-      </div>
     </div>
   );
 }
@@ -115,12 +125,46 @@ function WorkVisual({ work }: { work: (typeof WORKS)[number] }) {
     </div>
   );
 }
+function InstagramCase() {
+  return (
+    <article className="instagram-case" id="jeonseolirae">
+      <div className="instagram-reels">
+        {INSTAGRAM_CASE.reels.map((reel) => (
+          <a key={reel.href} href={reel.href} target="_blank" rel="noopener noreferrer"
+            aria-label={`${reel.title} 릴스 보기 (새 탭)`}>
+            <figure>
+              <img src={reel.image} alt={`전설이래 AI 애니메이션: ${reel.title}`}
+                width="1080" height="1920" loading="lazy" />
+              <figcaption><span>표시 조회수 {reel.views}</span><ArrowUpRight size={17} /></figcaption>
+            </figure>
+          </a>
+        ))}
+      </div>
+      <div className="instagram-case-copy">
+        <span className="section-label">AI 콘텐츠 제작·운영 사례</span>
+        <h3>{INSTAGRAM_CASE.name}</h3>
+        <h4>지역의 전설이,<br />사람들이 보는 콘텐츠로.</h4>
+        <p className="instagram-case-description">{INSTAGRAM_CASE.description}</p>
+        <dl className="instagram-case-metrics">
+          {INSTAGRAM_CASE.metrics.map((metric) => (
+            <div key={metric.label}><dt>{metric.label}</dt><dd>{metric.value}</dd></div>
+          ))}
+        </dl>
+        <p className="source-note">{INSTAGRAM_CASE.sourceNote}</p>
+        <a className="inline-link" href={INSTAGRAM_CASE.href} target="_blank" rel="noopener noreferrer">
+          {INSTAGRAM_CASE.handle}에서 보기<ArrowUpRight size={17} />
+        </a>
+      </div>
+    </article>
+  );
+}
 export function HomePage() {
   const [filter, setFilter] = useState("전체");
   const [interest, setInterest] = useState({ value: "", revision: 0 });
   const visible = WORKS.filter(
     (work) => filter === "전체" || work.category === filter,
   );
+  const showInstagramCase = filter !== "데이터·마케팅";
   return (
     <div className="brand-site" id="top">
       <SiteNav />
@@ -286,7 +330,7 @@ export function HomePage() {
             </div>
           </div>
           <p className="sr-only" role="status">
-            {visible.length}개의 작업이 표시됩니다.
+            {visible.length + (showInstagramCase ? 1 : 0)}개의 작업이 표시됩니다.
           </p>
           <div className="work-grid">
             {visible.map((work) => (
@@ -321,6 +365,7 @@ export function HomePage() {
               </article>
             ))}
           </div>
+          {showInstagramCase && <InstagramCase />}
           <div className="channels-area">
             <div>
               <h3>세 개의 채널, 서로 다른 이야기.</h3>
