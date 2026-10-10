@@ -1,20 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
-  <rect width="1200" height="630" fill="#214D39"/>
-  <g font-family="Arial,sans-serif" fill="#F7F8F2">
-    <text x="62" y="84" font-size="27" font-weight="700">OWNNEXT</text>
-    <text x="249" y="82" font-size="14">by TwoStepsAhead</text>
-    <text x="58" y="246" font-size="83" font-weight="700" letter-spacing="-4">Own your</text>
-    <text x="58" y="338" font-size="83" font-weight="700" letter-spacing="-4">next business.</text>
-  </g>
-  <g font-family="Pretendard,Apple SD Gothic Neo,sans-serif" fill="#FFD9E8">
-    <text x="63" y="407" font-size="29" font-weight="600">콘텐츠 다음은, 당신의 사업.</text>
-    <text x="64" y="552" font-size="17">사업모델 설계</text><text x="243" y="552" font-size="17">SaaS 제공·구축</text><text x="439" y="552" font-size="17">공동 운영</text>
-  </g>
-  <g transform="translate(814 137) rotate(8 147 156)">
-    <rect width="295" height="338" rx="100" fill="#FFD9E8"/>
-    <path d="M54 255V84h57l74 116V84h57v171h-57L111 140v115Z" fill="#214D39"/>
-    <path d="M185 84h57v57h-57Z" fill="#F2EEA5"/>
-  </g>
-  <path d="M63 510H1137" stroke="#6D8975"/>
-  <text x="1136" y="552" text-anchor="end" font-family="Arial,sans-serif" fill="#F7F8F2" font-size="15">twostepsahead.co.kr/ownnext</text>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1200" height="630" viewBox="0 0 1200 630"><style>text{font-family:Pretendard,"Apple SD Gothic Neo",sans-serif}</style><rect width="1200" height="630" fill="#214D39"/><text x="60" y="78" font-size="34" font-weight="600" fill="#F7F8F2" >OWNNEXT</text><text x="254" y="78" font-size="18" font-weight="400" fill="#FFD9E8" >by TwoStepsAhead</text>
+  <text x="60" y="250" font-size="80" font-weight="600" fill="#F7F8F2" letter-spacing="-3.2">콘텐츠 다음은,</text><text x="60" y="348" font-size="80" font-weight="600" fill="#F7F8F2" letter-spacing="-3.2">당신의 사업.</text>
+  <text x="64" y="428" font-size="29" font-weight="400" fill="#FFD9E8" >크리에이터의 다음 사업을 함께 만듭니다.</text>
+  <g transform="translate(834 169) rotate(9 140 140) scale(2.8)"><rect width="100" height="100" rx="26" fill="#FFD9E8"/><path d="M22 74V27h16l24 33V27h16v47H62L38 41v33Z" fill="#214D39"/><path d="M62 27h16v16H62Z" fill="#F2EEA5"/></g>
+  <path d="M60 544H1140" stroke="#F7F8F2" stroke-opacity=".25"/>
+  <text x="60" y="591" font-size="23" font-weight="400" fill="#F2EEA5" >사업모델 설계 · SaaS 제공·구축 · 공동 운영</text><text x="1140" y="591" font-size="21" font-weight="400" fill="#F7F8F2" text-anchor="end">twostepsahead.co.kr/ownnext</text></svg>
