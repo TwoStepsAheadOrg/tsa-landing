@@ -40,11 +40,11 @@ MICROWAVE를 통해 국가·언어별 고객 질문과 AI 인용 출처를 분�
 - [Telling](https://telling.ai.kr/): AI 캐릭터 대화와 개인화 콘텐츠.
 - [MICROWAVE](https://microwave.ai.kr/): 글로벌 마케팅 서비스.
 - [MICROWAVE Reddit](https://reddit.microwave.ai.kr/): 데이터 분석을 주제 선정과 Reddit 콘텐츠·운영으로 연결.
-- [이게 진짜라고?](https://www.youtube.com/@isthisreal_drama/videos): 한국어 드라마 채널.
+- [이게 진짜라고?](https://www.youtube.com/@isthisreal_drama/videos): 한국어 드라마 채널. 소개된 채널 화면은 1주일간의 성과이며 2026.10.08 캡처다.
 - [これ 本当](https://www.youtube.com/@korehonto_drama/videos): 일본어 드라마 채널.
 - [ORBIT MINUTE](https://www.youtube.com/@orbit.minute/videos): SF·우주·미스터리 AI 드라마 채널.
 
-## Instagram 제작·운영 사례: 전설이래
+## 전설이래: 제작 2일 만의 성과
 
 [전설이래 (@jeonseolirae)](https://www.instagram.com/jeonseolirae/)는 지명에 담긴 지역 전설을 1분 AI 애니메이션으로 제작하고 Instagram 릴스로 연재하는 콘텐츠다. 캐릭터·장면·목소리를 AI로 제작한다.
 
