@@ -999,34 +999,68 @@ textarea:focus-visible {
   color: var(--muted);
   margin-top: 12px;
 }
-.evidence-cases {
-  margin-top: 35px;
+.collaboration-section {
+  padding-block: 108px 80px;
 }
-.evidence-cases article {
-  border-top: 1px solid #bdc9df;
-  padding: 25px 0;
+.collaboration-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-top: 52px;
+  border-top: 1px solid var(--hairline);
+  border-left: 1px solid var(--hairline);
 }
-.evidence-cases article:last-child {
-  padding-bottom: 0;
+.collaboration-card {
+  min-width: 0;
+  padding: 24px 28px 30px;
+  border-right: 1px solid var(--hairline);
+  border-bottom: 1px solid var(--hairline);
+  text-align: center;
 }
-.evidence-cases span {
+.collaboration-status {
+  min-height: 25px;
+}
+.collaboration-status > span {
+  display: inline-block;
+  padding: 4px 9px;
+  background: var(--yellow);
   font-size: 12px;
-  color: var(--blue);
   font-weight: 600;
 }
-.evidence-cases h3 {
-  font-size: 21px;
+.collaboration-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 108px;
+  margin: 10px 0 17px;
+}
+.collaboration-logo img {
+  max-width: min(100%, 225px);
+  max-height: 65px;
+  width: 100%;
+  height: 65px;
+  object-fit: contain;
+}
+.collaboration-card h3 {
+  font-size: 16px;
   font-weight: 600;
-  letter-spacing: -0.5px;
   line-height: 1.5;
-  margin-top: 10px;
   word-break: keep-all;
 }
-.evidence-cases p {
-  font-size: 14px;
+.collaboration-card > p {
+  margin-top: 7px;
   color: var(--muted);
-  line-height: 1.7;
-  margin-top: 10px;
+  font-size: 13px;
+  line-height: 1.65;
+  word-break: keep-all;
+}
+@media (max-width: 640px) {
+  .collaboration-section { padding-block: 70px 35px; }
+  .collaboration-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); margin-top: 32px; }
+  .collaboration-card { padding: 18px 16px 24px; }
+  .collaboration-logo { height: 80px; margin-bottom: 12px; }
+  .collaboration-logo img { max-height: 50px; }
+  .collaboration-card h3 { font-size: 14px; }
+  .collaboration-card > p { font-size: 12px; }
 }
 .pluora-note {
   margin-top: 26px;
@@ -1985,9 +2019,6 @@ textarea:focus-visible {
   .data-stats p {
     font-size: 12px;
     line-height: 1.6;
-  }
-  .evidence-cases h3 {
-    font-size: 19px;
   }
   .process-list {
     gap: 26px 20px;
