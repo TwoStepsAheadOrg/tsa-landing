@@ -115,24 +115,28 @@ export const CHANNELS = [
   {
     name: "이게 진짜라고?",
     lang: "한국어 드라마",
+    periodHighlight: "1주일간의 성과",
     image: "/brand/channel-ko.webp",
     href: "https://www.youtube.com/@isthisreal_drama/videos",
   },
   {
     name: "これ、本当？",
     lang: "일본어 드라마",
+    periodHighlight: null,
     image: "/brand/channel-ja.webp",
     href: "https://www.youtube.com/@korehonto_drama/videos",
   },
   {
     name: "ORBIT MINUTE",
     lang: "SF·우주·미스터리",
+    periodHighlight: null,
     image: "/brand/channel-orbit.webp",
     href: "https://www.youtube.com/@orbit.minute/videos",
   },
 ];
 export const INSTAGRAM_CASE = {
   name: "전설이래",
+  periodHighlight: "제작 2일 만의 성과.",
   handle: "@jeonseolirae",
   href: "https://www.instagram.com/jeonseolirae/",
   description:

@@ -143,7 +143,7 @@ function InstagramCase() {
       <div className="instagram-case-copy">
         <span className="section-label">AI 콘텐츠 제작·운영 사례</span>
         <h3>{INSTAGRAM_CASE.name}</h3>
-        <h4>지역의 전설이,<br />사람들이 보는 콘텐츠로.</h4>
+        <h4>{INSTAGRAM_CASE.periodHighlight}<br />릴스 조회수 약 10.1만.</h4>
         <p className="instagram-case-description">{INSTAGRAM_CASE.description}</p>
         <dl className="instagram-case-metrics">
           {INSTAGRAM_CASE.metrics.map((metric) => (
@@ -393,6 +393,9 @@ export function HomePage() {
                     <ArrowUpRight size={18} />
                   </span>
                   <small>{channel.lang}</small>
+                  {channel.periodHighlight && (
+                    <strong className="channel-period">{channel.periodHighlight}</strong>
+                  )}
                 </a>
               ))}
             </div>

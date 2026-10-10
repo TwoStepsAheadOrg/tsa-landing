@@ -932,6 +932,17 @@ textarea:focus-visible {
   margin-top: 17px;
   font-size: 17px;
 }
+.channel-period {
+  display: inline-block;
+  margin-top: 14px;
+  padding: 8px 12px;
+  border-radius: 4px;
+  background: var(--mist);
+  color: var(--blue);
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.5;
+}
 .channels-grid small {
   display: block;
   font-size: 12px;
