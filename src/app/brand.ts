@@ -163,6 +163,43 @@ export const INSTAGRAM_CASE = {
     },
   ],
 };
+/** Collaboration history supplied by the company; new entries confirmed 2026-10-10. */
+export const COLLABORATIONS = [
+  {
+    name: "올리브영",
+    logo: "/brand/partners/oliveyoung-official-header.svg",
+    width: 153, height: 45, recent: true, scope: null,
+  },
+  {
+    name: "MangoBoost · 망고부스트",
+    logo: "/brand/partners/mangoboost-official-logo.svg",
+    width: 480, height: 100, recent: true, scope: null,
+  },
+  {
+    name: "삼성 Galaxy S26 관련 프로젝트",
+    logo: "/brand/partners/samsung-official-blue.png",
+    width: 1600, height: 425, recent: false,
+    scope: "어센트AI 협업 · AI 검색 데이터 공급·분석",
+  },
+  {
+    name: "어센트AI",
+    logo: "/brand/partners/ascent-ai-logo.svg",
+    width: 689, height: 100, recent: false,
+    scope: "AI 검색 데이터 협업",
+  },
+  {
+    name: "아워마케팅",
+    logo: "/brand/partners/ourmarketing-logo.png",
+    width: 788, height: 250, recent: false,
+    scope: "AI 가시성 모니터링·분석 리포트",
+  },
+  {
+    name: "셀라벤토",
+    logo: "/brand/partners/selavento-logo.png",
+    width: 697, height: 697, recent: false,
+    scope: "AI 가시성 모니터링·분석 리포트",
+  },
+];
 export const PROCESS = [
   {
     title: "질문을 찾습니다",

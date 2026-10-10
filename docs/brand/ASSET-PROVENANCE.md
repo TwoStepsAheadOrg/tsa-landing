@@ -1,5 +1,20 @@
 # 브랜드 자산 출처와 표기 · 2026-10-10
 
+## 협업사 공식 로고 · v4
+
+사용자가 2026-10-10 올리브영과 망고부스트의 최근 협업을 직접 확인하고 공개 로고 추가를 요청했습니다. 두 회사는 ‘최근 협업’으로 표기하며 구체 캠페인·성과·계약 형식을 추가하지 않았습니다. 기존 이력은 회사 소개서의 명칭과 수행 범위를 유지합니다.
+
+| 브랜드 | 원본 파일 | 공식 출처 |
+|---|---|---|
+| CJ OLIVE YOUNG | oliveyoung-official-header.svg | [공식 브랜드 소개](https://corp.oliveyoung.com/ko/about/brand)의 헤더 로고 |
+| MangoBoost | mangoboost-official-logo.svg | [공식 홈페이지](https://www.mangoboost.io/) 헤더 이미지 |
+| Samsung | samsung-official-blue.png | [공식 브랜드 로고](https://www.samsung.com/us/about-us/brand-identity/logo/)의 Lettermark ZIP / Blue PNG |
+| ASCENT AI | ascent-ai-logo.svg | [공식 홈페이지](https://ascentai.one/) 헤더 로고 |
+| 아워마케팅 | ourmarketing-logo.png | [공식 서브도메인](https://hope.ourmarketing.co.kr/) 헤더 로고. 본사 사이트와 사업자 정보 일치 확인 |
+| 셀라벤토 | selavento-logo.png | [공식 홈페이지](https://www.selavento.com/) 헤더 심볼, 회사명 텍스트 병기 |
+
+웹 파일은 `public/brand/partners/`에 원본 바이트 그대로 저장했습니다. 색상·비율을 보존하며 로고를 새로 그리지 않았습니다. 원본 수집 URL·SHA는 제작 기록의 `revision-v4/assets/LOGO-SOURCES.json`과 `revision-v4/audit/LOGO-ASSET-SOURCES.json`에 있습니다. 각 상표는 해당 회사의 자산이며, 로고는 회사가 제공한 협업 이력을 식별하는 용도로 사용합니다. 삼성은 어센트AI를 통한 협업이라는 본문 설명을 유지합니다.
+
 ## 회사 제공 작업 이미지
 
 아래 이미지는 사용자가 제공한 `투스텝스어헤드_회사소개_콜라주표지_20261008.pdf`에서 추출한 작업 예시를 웹용 WebP로 변환한 것입니다. 이미지의 서비스·캐릭터·작품 맥락을 유지합니다. 제공 자료의 재사용은 해당 이미지에 별도의 공개 재배포 라이선스를 부여한다는 의미가 아닙니다.

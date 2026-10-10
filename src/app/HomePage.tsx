@@ -3,7 +3,7 @@ import {
   ArrowDown, ArrowUpRight, Plus, Download, Heart, MessageCircle,
   Send, Bookmark, MoreHorizontal,
 } from "lucide-react";
-import { BRAND, SERVICE_ITEMS, WORKS, CHANNELS, PROCESS, INSTAGRAM_CASE } from "./brand";
+import { BRAND, SERVICE_ITEMS, WORKS, CHANNELS, PROCESS, INSTAGRAM_CASE, COLLABORATIONS } from "./brand";
 import { SiteNav } from "./components/SiteNav";
 import { SiteFooter } from "./components/SiteFooter";
 import { BrandMark } from "./components/BrandMark";
@@ -444,30 +444,6 @@ export function HomePage() {
                 </div>
               </div>
               <p className="source-note">2026.09 자체 운영자료 기준</p>
-              <div className="evidence-cases">
-                <article>
-                  <span>어센트AI 협업</span>
-                  <h3>
-                    Samsung Galaxy S26 관련
-                    <br />
-                    글로벌 AI 검색 데이터 공급·분석
-                  </h3>
-                  <p>국가별 AI 검색 데이터를 협업 파트너에게 공급했습니다.</p>
-                </article>
-                <article>
-                  <span>기업·에이전시 콘텐츠</span>
-                  <h3>12개 업체, GEO 콘텐츠 192편</h3>
-                  <p>
-                    GEO 콘텐츠를 기획·제작하고 발행 이후 AI 노출을 재측정합니다.
-                  </p>
-                </article>
-              </div>
-              <p className="source-note">
-                제작·발행 사례: 2026.09 자체자료. 납품 범위: 2026.10 회사
-                소개서.
-                <br />
-                삼성 프로젝트는 어센트AI 협업으로 수행했습니다.
-              </p>
               <details className="pluora-note">
                 <summary>
                   Pluora는 무엇인가요?
@@ -481,6 +457,32 @@ export function HomePage() {
               </details>
             </div>
           </div>
+        </section>
+        <section className="collaboration-section wrap" id="collaborations" aria-labelledby="collaboration-heading">
+          <div className="section-heading split-heading">
+            <div>
+              <span className="section-label">협업 이력</span>
+              <h2 id="collaboration-heading">함께한 브랜드와<br />파트너.</h2>
+            </div>
+            <p>브랜드와 에이전시의 과제를<br />함께 풀어갑니다.</p>
+          </div>
+          <div className="collaboration-grid">
+            {COLLABORATIONS.map((company) => (
+              <article className="collaboration-card" key={company.name}>
+                <div className="collaboration-status">
+                  {company.recent && <span>최근 협업</span>}
+                </div>
+                <div className="collaboration-logo">
+                  {company.logo ? (
+                    <img src={company.logo} alt={`${company.name} 로고`} width={company.width} height={company.height} loading="lazy" />
+                  ) : <strong>{company.name}</strong>}
+                </div>
+                <h3>{company.name}</h3>
+                {company.scope && <p>{company.scope}</p>}
+              </article>
+            ))}
+          </div>
+          <p className="source-note">협업 이력: 2026.10 회사 제공 자료 기준. 삼성 Galaxy S26 관련 데이터 공급·분석은 어센트AI 협업으로 수행했습니다.</p>
         </section>
         <section className="process-section wrap" id="journey">
           <div className="section-heading">
