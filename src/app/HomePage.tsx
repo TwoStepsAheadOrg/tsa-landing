@@ -8,6 +8,7 @@ import { SiteNav } from "./components/SiteNav";
 import { SiteFooter } from "./components/SiteFooter";
 import { BrandMark } from "./components/BrandMark";
 import { BrandContact } from "./components/BrandContact";
+import { PartnerMarquee } from "./components/PartnerMarquee";
 import { trackEvent } from "@/lib/gtag";
 function HeroArt() {
   return (
@@ -202,16 +203,7 @@ export function HomePage() {
           </div>
           <HeroArt />
         </section>
-        <div className="brand-strip">
-          <div className="wrap">
-            <span>데이터와 콘텐츠가 만나는 곳</span>
-            <p>Plurank</p>
-            <p>MICROWAVE</p>
-            <p>NextEp</p>
-            <p>RIN</p>
-            <p>Telling</p>
-          </div>
-        </div>
+        <PartnerMarquee />
         <section className="promise-section wrap" id="studio">
           <div className="section-heading">
             <span className="section-label">우리가 보는 브랜드의 다음</span>
