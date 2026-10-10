@@ -1,0 +1,591 @@
+import { useState } from "react";
+import { ArrowDown, ArrowUpRight, Plus, Download } from "lucide-react";
+import { BRAND, SERVICE_ITEMS, WORKS, CHANNELS, PROCESS } from "./brand";
+import { SiteNav } from "./components/SiteNav";
+import { SiteFooter } from "./components/SiteFooter";
+import { BrandMark } from "./components/BrandMark";
+import { BrandContact } from "./components/BrandContact";
+import { trackEvent } from "@/lib/gtag";
+function HeroArt() {
+  return (
+    <div
+      className="hero-art"
+      aria-label="TSA의 실제 작업: Plurank 데이터와 AI 모델 RIN"
+    >
+      <div className="art-backdrop" aria-hidden="true"></div>
+      <figure className="hero-portrait">
+        <img
+          src="/brand/rin-portrait.webp"
+          alt="TSA가 만든 AI 뷰티 캐릭터 RIN"
+          width="800"
+          height="1200"
+        />
+        <figcaption>
+          <span>RIN</span>AI model & character
+        </figcaption>
+      </figure>
+      <figure className="hero-data">
+        <div className="art-caption">
+          <span>Plurank</span>
+          <span>AI visibility</span>
+        </div>
+        <img
+          src="/brand/plurank.webp"
+          alt="Plurank AI 가시성 분석 서비스 화면 예시"
+          width="754"
+          height="753"
+        />
+        <figcaption>데이터가 콘텐츠의 시작점이 됩니다.</figcaption>
+      </figure>
+      <div className="art-stamp">
+        <BrandMark />
+        <span>
+          Data meets
+          <br />
+          creative.
+        </span>
+      </div>
+    </div>
+  );
+}
+function WorkVisual({ work }: { work: (typeof WORKS)[number] }) {
+  if (work.theme === "microwave")
+    return (
+      <div className="work-visual microwave-visual" aria-hidden="true">
+        <span className="mw-word">MICROWAVE</span>
+        <div className="conversation">
+          <span>고객은 무엇을 묻고 있을까?</span>
+          <span>우리 브랜드가 답할 차례.</span>
+        </div>
+        <span className="visual-caption">
+          글로벌 인사이트를 현지의 콘텐츠로
+        </span>
+      </div>
+    );
+  if (work.theme === "nextep")
+    return (
+      <div className="work-visual nextep-visual">
+        <div>
+          <span>다음화</span>
+          <p>
+            이야기의
+            <br />
+            다음이 있는 곳.
+          </p>
+          <small>AI drama platform</small>
+        </div>
+        <img
+          src={work.image!}
+          alt={work.alt}
+          width="360"
+          height="480"
+          loading="lazy"
+        />
+      </div>
+    );
+  if (work.theme === "telling")
+    return (
+      <div className="work-visual telling-visual">
+        <span>
+          Telling<small>나의 이야기가 되는 콘텐츠</small>
+        </span>
+        <img
+          src={work.image!}
+          alt={work.alt}
+          width="720"
+          height="960"
+          loading="lazy"
+        />
+      </div>
+    );
+  return (
+    <div className={`work-visual ${work.theme}-visual`}>
+      <img
+        src={work.image!}
+        alt={work.alt}
+        width={work.theme === "rin" ? 1000 : 754}
+        height={work.theme === "rin" ? 667 : 753}
+        loading="lazy"
+      />
+      {work.theme === "plurank" && (
+        <span className="visual-caption">
+          서비스 화면 예시 · 개별 고객의 성과 수치가 아닙니다
+        </span>
+      )}
+    </div>
+  );
+}
+export function HomePage() {
+  const [filter, setFilter] = useState("전체");
+  const [interest, setInterest] = useState({ value: "", revision: 0 });
+  const visible = WORKS.filter(
+    (work) => filter === "전체" || work.category === filter,
+  );
+  return (
+    <div className="brand-site" id="top">
+      <SiteNav />
+      <main id="main-content">
+        <section className="hero-section wrap">
+          <div className="hero-copy">
+            <p className="hero-kicker">데이터로 읽고, 콘텐츠로 움직입니다.</p>
+            <h1>
+              데이터 기반으로
+              <br />
+              AI 콘텐츠를 만들고,
+              <br />
+              AI가 좋아하는
+              <br />
+              광고를 만듭니다.
+            </h1>
+            <p className="hero-description">{BRAND.description}</p>
+            <div className="hero-actions">
+              <a href="#work" className="brand-button primary">
+                실제 작업 보기
+                <ArrowDown size={18} />
+              </a>
+              <a
+                href={BRAND.pdf}
+                download
+                className="brand-button text-button"
+                onClick={() =>
+                  trackEvent("company_profile_download", { location: "hero" })
+                }
+              >
+                회사 소개서
+                <Download size={17} />
+              </a>
+            </div>
+          </div>
+          <HeroArt />
+        </section>
+        <div className="brand-strip">
+          <div className="wrap">
+            <span>데이터와 콘텐츠가 만나는 곳</span>
+            <p>Plurank</p>
+            <p>MICROWAVE</p>
+            <p>NextEp</p>
+            <p>RIN</p>
+            <p>Telling</p>
+          </div>
+        </div>
+        <section className="promise-section wrap" id="studio">
+          <div className="section-heading">
+            <span className="section-label">우리가 보는 브랜드의 다음</span>
+            <h2>
+              사람의 관심과
+              <br />
+              AI의 선택을 함께 설계합니다.
+            </h2>
+          </div>
+          <div className="promise-grid">
+            <div>
+              <span className="step-name">사람에게는</span>
+              <h3>보고 싶은 이야기.</h3>
+              <p>
+                브랜드의 장점을 설명하는 데서 한 걸음 더.
+                <br />
+                멈춰 보고, 기억하고, 대화하게 만드는
+                <br />
+                콘텐츠를 만듭니다.
+              </p>
+            </div>
+            <Plus className="promise-plus" size={38} aria-hidden="true" />
+            <div>
+              <span className="step-name">AI에게는</span>
+              <h3>참고할 수 있는 근거.</h3>
+              <p>
+                고객의 질문에 답하는 정보와 분명한 출처.
+                <br />
+                AI가 브랜드를 이해하고 인용할 수 있도록
+                <br />
+                콘텐츠의 구조를 설계합니다.
+              </p>
+            </div>
+          </div>
+          <p className="promise-definition">
+            우리가 말하는 ‘AI가 좋아하는 광고’는 고객에게 유용하고, AI가
+            이해하기 쉬운 브랜드 콘텐츠입니다.
+          </p>
+        </section>
+        <section className="services-section" id="services">
+          <div className="wrap">
+            <div className="section-heading split-heading">
+              <div>
+                <span className="section-label">우리가 하는 일</span>
+                <h2>
+                  브랜드의 목표에 맞춰
+                  <br />
+                  만들고, 연결합니다.
+                </h2>
+              </div>
+              <p>
+                콘텐츠 제작부터 AI 검색과 글로벌 커뮤니티까지.
+                <br />
+                필요한 지점에서 시작해 하나의 흐름으로 연결합니다.
+              </p>
+            </div>
+            <div className="services-list">
+              {SERVICE_ITEMS.map((service) => (
+                <article key={service.title} className="service-row">
+                  <div>
+                    <h3>{service.title}</h3>
+                    <p className="service-subtitle">{service.subtitle}</p>
+                  </div>
+                  <div>
+                    <p className="service-description">{service.text}</p>
+                    <ul>
+                      {service.outputs.map((x) => (
+                        <li key={x}>{x}</li>
+                      ))}
+                    </ul>
+                    <p className="service-note">{service.note}</p>
+                  </div>
+                  <a
+                    href="#contact"
+                    className="service-link"
+                    aria-label={`${service.title} 문의`}
+                    onClick={() =>
+                      setInterest((previous) => ({
+                        value: service.interest,
+                        revision: previous.revision + 1,
+                      }))
+                    }
+                  >
+                    <ArrowUpRight size={26} />
+                  </a>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+        <section className="work-section wrap" id="work">
+          <div className="section-heading split-heading">
+            <div>
+              <span className="section-label">실제 작업</span>
+              <h2>
+                직접 만들고,
+                <br />
+                세상에 내놓습니다.
+              </h2>
+            </div>
+            <div
+              className="work-filters"
+              role="group"
+              aria-label="작업 분야 필터"
+            >
+              {["전체", "콘텐츠", "데이터·마케팅"].map((x) => (
+                <button
+                  type="button"
+                  aria-pressed={filter === x}
+                  key={x}
+                  onClick={() => setFilter(x)}
+                >
+                  {x}
+                </button>
+              ))}
+            </div>
+          </div>
+          <p className="sr-only" role="status">
+            {visible.length}개의 작업이 표시됩니다.
+          </p>
+          <div className="work-grid">
+            {visible.map((work) => (
+              <article key={work.id} className={`work-item work-${work.theme}`}>
+                <a
+                  className="work-image-link"
+                  href={work.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`${work.cta} (새 탭)`}
+                >
+                  <WorkVisual work={work} />
+                  <span className="work-open">
+                    <ArrowUpRight size={24} />
+                  </span>
+                </a>
+                <div className="work-meta">
+                  <h3>{work.name}</h3>
+                  <span>{work.kind}</span>
+                </div>
+                <h4>{work.title}</h4>
+                <p>{work.description}</p>
+                <a
+                  className="inline-link"
+                  href={work.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {work.cta}
+                  <ArrowUpRight size={15} />
+                </a>
+              </article>
+            ))}
+          </div>
+          <div className="channels-area">
+            <div>
+              <h3>세 개의 채널, 서로 다른 이야기.</h3>
+              <p>
+                한국어·일본어 드라마와 SF·미스터리 콘텐츠를 직접 운영합니다.
+              </p>
+            </div>
+            <div className="channels-grid">
+              {CHANNELS.map((channel) => (
+                <a
+                  key={channel.name}
+                  href={channel.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <img
+                    src={channel.image}
+                    alt={`${channel.name} 채널 화면, 2026년 10월 8일 캡처`}
+                    width="1280"
+                    height="720"
+                    loading="lazy"
+                  />
+                  <span>
+                    <strong>{channel.name}</strong>
+                    <ArrowUpRight size={18} />
+                  </span>
+                  <small>{channel.lang}</small>
+                </a>
+              ))}
+            </div>
+            <p className="source-note">채널 화면: 2026.10.08 캡처</p>
+          </div>
+        </section>
+        <section className="data-section" id="approach">
+          <div className="wrap data-grid">
+            <div className="section-heading">
+              <span className="section-label">데이터가 만드는 차이</span>
+              <h2>
+                만들기 전에 묻고,
+                <br />
+                발행한 뒤에
+                <br />
+                다시 확인합니다.
+              </h2>
+              <p>
+                Plurank로 AI 답변 속 브랜드 언급과 인용 출처를 관측합니다.
+                데이터를 ‘얼마나 모았는가’에서 멈추지 않고, ‘다음에 무엇을 만들
+                것인가’로 연결합니다.
+              </p>
+              <a
+                href="https://plurank.com/"
+                className="inline-link"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Plurank 알아보기
+                <ArrowUpRight size={16} />
+              </a>
+            </div>
+            <div className="data-evidence">
+              <div className="data-stats">
+                <div>
+                  <strong>
+                    14<span>개국</span>
+                  </strong>
+                  <p>국가·언어별 질문과 답변</p>
+                </div>
+                <div>
+                  <strong>
+                    7<span>개 AI 플랫폼</span>
+                  </strong>
+                  <p>브랜드 언급과 인용 출처</p>
+                </div>
+              </div>
+              <p className="source-note">2026.09 자체 운영자료 기준</p>
+              <div className="evidence-cases">
+                <article>
+                  <span>어센트AI 협업</span>
+                  <h3>
+                    Samsung Galaxy S26 관련
+                    <br />
+                    글로벌 AI 검색 데이터 공급·분석
+                  </h3>
+                  <p>국가별 AI 검색 데이터를 협업 파트너에게 공급했습니다.</p>
+                </article>
+                <article>
+                  <span>기업·에이전시 콘텐츠</span>
+                  <h3>12개 업체, GEO 콘텐츠 192편</h3>
+                  <p>
+                    GEO 콘텐츠를 기획·제작하고 발행 이후 AI 노출을 재측정합니다.
+                  </p>
+                </article>
+              </div>
+              <p className="source-note">
+                제작·발행 사례: 2026.09 자체자료. 납품 범위: 2026.10 회사
+                소개서.
+                <br />
+                삼성 프로젝트는 어센트AI 협업으로 수행했습니다.
+              </p>
+              <details className="pluora-note">
+                <summary>
+                  Pluora는 무엇인가요?
+                  <Plus size={17} />
+                </summary>
+                <p>
+                  관측 데이터를 바탕으로 발행 전 콘텐츠의 인용 가능성을 예측하기
+                  위해 학습·개발 중인 모델입니다. 현재 운영하는 Plurank의 관측
+                  기능과 구분됩니다.
+                </p>
+              </details>
+            </div>
+          </div>
+        </section>
+        <section className="process-section wrap" id="journey">
+          <div className="section-heading">
+            <span className="section-label">함께 일하는 방식</span>
+            <h2>
+              한 번의 제작이
+              <br />
+              다음 실행의 근거가 되도록.
+            </h2>
+          </div>
+          <ol className="process-list">
+            {PROCESS.map((step, index) => (
+              <li key={step.title}>
+                <span className="process-number">0{index + 1}</span>
+                <h3>{step.title}</h3>
+                <p>{step.text}</p>
+                <span className="process-output">{step.output}</span>
+              </li>
+            ))}
+          </ol>
+        </section>
+        <section className="team-section" id="team">
+          <div className="wrap">
+            <div className="team-heading">
+              <div className="section-heading">
+                <span className="section-label">투스텝스어헤드 팀</span>
+                <h2>
+                  데이터를 읽는 사람과
+                  <br />
+                  만드는 사람이
+                  <br />한 팀에 있습니다.
+                </h2>
+              </div>
+              <div className="team-type">
+                <span>기획</span>
+                <span>디자인</span>
+                <span>개발</span>
+                <span>운영</span>
+                <BrandMark />
+              </div>
+            </div>
+            <div className="team-details">
+              <p>
+                기획부터 콘텐츠 제작, 서비스 개발과 운영까지.
+                <br />
+                서로 다른 전문성을 가진 8명이 한 흐름으로 일합니다.
+                <small>팀 구성: 2026.10 회사 소개서 기준</small>
+              </p>
+              <div>
+                <h3>
+                  김건희 <span>Founder / CEO</span>
+                </h3>
+                <p>
+                  연쇄 창업·엑시트 경험
+                  <br />
+                  AI·백엔드 개발, 제품 기획
+                </p>
+              </div>
+              <div>
+                <h3>
+                  김지현 <span>Founder / COO</span>
+                </h3>
+                <p>
+                  B2B 운영 8년
+                  <br />
+                  Series A·B 투자 유치, 조직 운영 경험
+                </p>
+              </div>
+            </div>
+            <div className="capability-block" id="solutions">
+              <div>
+                <h3>콘텐츠를 실제 서비스로 만드는 기술.</h3>
+                <p>
+                  AI 에이전트와 업무 자동화, 웹·앱·CRM 구축, 기업 AI 교육까지
+                  함께합니다.
+                </p>
+              </div>
+              <details>
+                <summary>
+                  기술·운영 역량 살펴보기
+                  <Plus size={20} />
+                </summary>
+                <div className="capability-grid">
+                  <div>
+                    <h4>시스템 구축</h4>
+                    <p>
+                      ChargeFLOW 전기차 충전 관제, K-Trip ONE 관광 앱 등 실제
+                      업무와 서비스를 개발해 왔습니다.
+                    </p>
+                  </div>
+                  <div>
+                    <h4>직접 운영하는 제품</h4>
+                    <p>
+                      <a
+                        href="https://www.woojoocall.com"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        우주콜
+                      </a>{" "}
+                      AI 전화 응대
+                      <br />
+                      <a
+                        href="https://boim.twostepsahead.co.kr"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        보임
+                      </a>{" "}
+                      AI 브리핑·플레이스 모니터링
+                      <br />
+                      <a
+                        href="https://awayedition.com"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        어웨이에디션
+                      </a>{" "}
+                      도시 가이드
+                    </p>
+                  </div>
+                  <div id="education">
+                    <h4>기업 AI 교육</h4>
+                    <p>
+                      리더 특강, 부서별 실무 워크숍, 개발자 교육. 실제 제품을
+                      만든 경험을 업무에 연결합니다.
+                    </p>
+                    <a
+                      className="inline-link"
+                      href="#contact"
+                      onClick={() =>
+                        setInterest((previous) => ({
+                          value: "edu",
+                          revision: previous.revision + 1,
+                        }))
+                      }
+                    >
+                      교육 문의
+                      <ArrowUpRight size={15} />
+                    </a>
+                  </div>
+                </div>
+              </details>
+            </div>
+            <a className="inline-link team-careers" href="/careers/">
+              함께할 동료를 찾습니다
+              <ArrowUpRight size={17} />
+            </a>
+          </div>
+        </section>
+        <BrandContact interest={interest} />
+      </main>
+      <SiteFooter />
+    </div>
+  );
+}

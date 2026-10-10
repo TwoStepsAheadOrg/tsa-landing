@@ -277,7 +277,7 @@ export function CareersPage() {
     <div className="min-h-screen bg-[color:var(--lt-bg)] font-dc-body text-[color:var(--lt-ink)] antialiased">
       <SiteNav variant="careers" />
 
-      <main>
+      <main id="main-content">
         <section id="top" className="relative isolate overflow-hidden border-b border-[color:var(--lt-line)] bg-[color:var(--lt-bg-2)] px-5 pb-20 pt-36 md:px-8 md:pb-28 md:pt-44">
           <div className="relative z-10 mx-auto grid min-h-[620px] max-w-[1200px] items-center gap-16 lg:grid-cols-[minmax(0,1.35fr)_minmax(300px,0.65fr)]">
             <div>

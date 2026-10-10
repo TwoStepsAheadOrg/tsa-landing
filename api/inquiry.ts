@@ -13,6 +13,9 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const MAX_LEN = 4000;
 
 const INTEREST_LABEL: Record<string, string> = {
+  content: 'AI 콘텐츠·모델 제작',
+  geo: 'AI 검색·브랜드 콘텐츠 (AEO/GEO)',
+  global: '글로벌·Reddit 마케팅',
   ax: 'AX 도입 · AI 상담/자동화/에이전트',
   dx: 'DX 구축 · SaaS/관제/CRM 개발',
   aicx: 'AICX · AI 전화/채팅 응대',
@@ -42,6 +45,23 @@ function escapeMrkdwn(s: string): string {
   return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
 
+/**
+ * Slack section text is limited to 3,000 characters after escaping. Split the
+ * original text first, keeping Unicode code points and escape entities intact.
+ * A 400-code-point chunk expands to at most 2,000 characters, plus its label.
+ * https://docs.slack.dev/reference/block-kit/blocks/section-block/
+ */
+function messageSections(rawMessage: string) {
+  const characters = Array.from(rawMessage);
+  const sections = [];
+  for (let offset = 0; offset < characters.length; offset += 400) {
+    const label = offset === 0 ? 'Message' : 'Message (continued)';
+    const text = escapeMrkdwn(characters.slice(offset, offset + 400).join(''));
+    sections.push({ type: 'section', text: { type: 'mrkdwn', text: `*${label}*\n${text}` } });
+  }
+  return sections;
+}
+
 export default async function handler(req: Request): Promise<Response> {
   if (req.method !== 'POST') {
     return jsonResponse({ error: 'method_not_allowed' }, 405);
@@ -51,6 +71,9 @@ export default async function handler(req: Request): Promise<Response> {
   try {
     body = await req.json();
   } catch {
+    return jsonResponse({ error: 'invalid_json' }, 400);
+  }
+  if (!body || typeof body !== 'object' || Array.isArray(body)) {
     return jsonResponse({ error: 'invalid_json' }, 400);
   }
 
@@ -77,7 +100,6 @@ export default async function handler(req: Request): Promise<Response> {
   const name = escapeMrkdwn(rawName);
   const company = escapeMrkdwn(rawCompany);
   const email = escapeMrkdwn(rawEmail);
-  const message = escapeMrkdwn(rawMessage);
   const interest = INTEREST_LABEL[interestKey] ?? escapeMrkdwn(interestKey);
 
   const webhookUrl = (globalThis as { process?: { env?: Record<string, string | undefined> } })
@@ -99,7 +121,9 @@ export default async function handler(req: Request): Promise<Response> {
     blocks: [
       {
         type: 'header',
-        text: { type: 'plain_text', text: `📬 New inquiry · ${company}`, emoji: true },
+        // A fixed heading stays within Slack's 150-character header limit;
+        // the full accepted company name is preserved in the field below.
+        text: { type: 'plain_text', text: '📬 New website inquiry', emoji: true },
       },
       {
         type: 'section',
@@ -110,10 +134,7 @@ export default async function handler(req: Request): Promise<Response> {
           { type: 'mrkdwn', text: `*Interest*\n${interest}` },
         ],
       },
-      {
-        type: 'section',
-        text: { type: 'mrkdwn', text: `*Message*\n${message}` },
-      },
+      ...messageSections(rawMessage),
       {
         type: 'context',
         elements: [
