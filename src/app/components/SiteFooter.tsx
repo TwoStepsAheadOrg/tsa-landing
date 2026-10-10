@@ -17,6 +17,7 @@ export function SiteFooter() {
               회사 소개서 PDF
             </a>
             <a href="/careers/">채용</a>
+            <a href="/ownnext/">크리에이터 사업 · OWNNEXT</a>
             <a href={`mailto:${BRAND.email}`}>이메일 문의</a>
           </div>
         </div>

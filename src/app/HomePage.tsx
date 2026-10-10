@@ -633,6 +633,22 @@ export function HomePage() {
             </a>
           </div>
         </section>
+        <section className="creator-business-section" id="creator-business">
+          <div className="wrap creator-business-grid">
+            <div className="creator-business-copy">
+              <span className="section-label">크리에이터 사업</span>
+              <h2>콘텐츠를 만들고,<br />발견되게 하고,<br />사업으로 이어갑니다.</h2>
+              <p>크리에이터의 콘텐츠와 팬의 신뢰가 오래 이어지는 사업이 되도록.<br /> 사업모델 설계부터 SaaS 제공·구축, 공동 운영까지 함께합니다.</p>
+              <a className="brand-button creator-business-cta" href="/ownnext/" onClick={() => trackEvent("creator_business_visit", { location: "company" })}>OWNNEXT 알아보기<ArrowUpRight size={18} /></a>
+            </div>
+            <a className="creator-business-brand" href="/ownnext/" aria-label="OWNNEXT 크리에이터 비즈니스 스튜디오">
+              <img src="/ownnext/mark.svg" width="88" height="88" alt="" loading="lazy" />
+              <strong>OWNNEXT</strong><span>오운넥스트 · by TwoStepsAhead</span>
+              <p>콘텐츠 다음은,<br />당신의 사업.</p>
+              <div><span>사업모델 설계</span><span>SaaS 제공·구축</span><span>공동 운영</span></div>
+            </a>
+          </div>
+        </section>
         <BrandContact interest={interest} />
       </main>
       <SiteFooter />

@@ -21,6 +21,7 @@ export default defineConfig({
       input: {
         main: path.resolve(__dirname, 'index.html'),
         careers: path.resolve(__dirname, 'careers/index.html'),
+        ownnext: path.resolve(__dirname, 'ownnext/index.html'),
       },
     },
   },
