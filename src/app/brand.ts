@@ -229,5 +229,6 @@ export const INTEREST_OPTIONS = [
   { value: "ax", label: "AI 시스템·자동화 구축" },
   { value: "edu", label: "기업 AI 교육" },
   { value: "studio", label: "사업·콘텐츠 협업" },
+  { value: "creator", label: "크리에이터 사업 · OWNNEXT" },
   { value: "other", label: "기타" },
 ];

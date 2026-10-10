@@ -131,6 +131,7 @@ for (const [interest, label] of [
   ['content', 'AI 콘텐츠·모델 제작'],
   ['geo', 'AI 검색·브랜드 콘텐츠 (AEO/GEO)'],
   ['global', '글로벌·Reddit 마케팅'],
+  ['creator', '크리에이터 사업 · OWNNEXT'],
 ]) {
   test(`new ${interest} interest reaches the notification with its readable label`, async () => {
     const h = harness();
