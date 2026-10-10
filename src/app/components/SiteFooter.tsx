@@ -1,73 +1,34 @@
-import { FOOTER, SERVICES } from '../content';
-
+import { BRAND } from "../brand";
+import { FOOTER } from "../content";
+import { BrandLogo } from "./BrandMark";
 export function SiteFooter() {
   return (
-    <footer className="border-t border-[color:var(--lt-line)] bg-[color:var(--lt-bg-2)] px-5 py-14 md:px-8">
-      <div className="mx-auto flex max-w-[1200px] flex-col gap-10 md:flex-row md:items-start md:justify-between">
-        <div className="max-w-sm">
-          <div className="font-dc-display text-lg font-extrabold tracking-tight text-[color:var(--lt-ink)]">
-            Two<span className="text-[color:var(--lt-purple)]">Steps</span>Ahead
+    <footer className="brand-footer">
+      <div className="wrap">
+        <div className="footer-top">
+          <div>
+            <a href="/" aria-label="TwoStepsAhead 홈">
+              <BrandLogo />
+            </a>
+            <p>데이터에서 시작해, 다음의 가능성으로.</p>
           </div>
-          <p className="mt-2 font-dc-label text-[12px] text-[color:var(--lt-mute-2)]">
-            AX · DX · Education · Startup Studio — Seoul
-          </p>
-          <div className="mt-5 flex flex-col gap-1.5">
-            <span className="font-dc-body text-[13px] font-semibold text-[color:var(--lt-mute)]">
-              {FOOTER.corp}
-            </span>
+          <div className="footer-links">
+            <a href={BRAND.pdf} download>
+              회사 소개서 PDF
+            </a>
+            <a href="/careers/">채용</a>
+            <a href={`mailto:${BRAND.email}`}>이메일 문의</a>
+          </div>
+        </div>
+        <div className="footer-bottom">
+          <div>
+            <strong>{FOOTER.corp}</strong>
             {FOOTER.lines.map((line) => (
-              <span key={line} className="font-dc-body text-[12px] leading-relaxed text-[color:var(--lt-mute-2)]">
-                {line}
-              </span>
+              <p key={line}>{line}</p>
             ))}
           </div>
+          <p>{FOOTER.copyright}</p>
         </div>
-        <div className="flex gap-12">
-          <div className="flex flex-col gap-2">
-            <span className="font-dc-label text-[11px] uppercase tracking-[0.15em] text-[color:var(--lt-mute-2)]">
-              Our services
-            </span>
-            {SERVICES.map((s) => (
-              <a
-                key={s.name}
-                href={s.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="font-dc-body text-[13px] text-[color:var(--lt-mute)] transition-colors hover:text-[color:var(--lt-ink)]"
-              >
-                {s.name}
-              </a>
-            ))}
-          </div>
-          <div className="flex flex-col gap-2">
-            <span className="font-dc-label text-[11px] uppercase tracking-[0.15em] text-[color:var(--lt-mute-2)]">
-              Contact
-            </span>
-            <a
-              href="mailto:glenn.kim@twostepsahead.co.kr"
-              className="font-dc-body text-[13px] text-[color:var(--lt-mute)] transition-colors hover:text-[color:var(--lt-ink)]"
-            >
-              glenn.kim@twostepsahead.co.kr
-            </a>
-            <a
-              href="/#contact"
-              className="font-dc-body text-[13px] text-[color:var(--lt-mute)] transition-colors hover:text-[color:var(--lt-ink)]"
-            >
-              도입·교육 문의
-            </a>
-            <a
-              href="/careers/"
-              className="font-dc-body text-[13px] text-[color:var(--lt-mute)] transition-colors hover:text-[color:var(--lt-ink)]"
-            >
-              채용과 조직문화
-            </a>
-            <span className="font-dc-body text-[13px] text-[color:var(--lt-mute-2)]">Seoul · KST</span>
-          </div>
-        </div>
-      </div>
-      <div className="mx-auto mt-10 flex max-w-[1200px] flex-col gap-2 border-t border-[color:var(--lt-line)] pt-6 font-dc-label text-[11px] text-[color:var(--lt-mute-2)] sm:flex-row sm:items-center sm:justify-between">
-        <span>{FOOTER.copyright}</span>
-        <span>AX · DX · Education · Startup Studio</span>
       </div>
     </footer>
   );

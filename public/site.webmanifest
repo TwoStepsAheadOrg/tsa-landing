@@ -1,15 +1,14 @@
 {
   "name": "TwoStepsAhead",
   "short_name": "TSA",
-  "description": "기업 AX·DX 도입 AI 개발사 · 스타트업 스튜디오",
+  "description": "데이터 기반으로 AI 콘텐츠를 만들고, AI가 좋아하는 광고를 만듭니다.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#fafaf8",
-  "theme_color": "#fafaf8",
+  "background_color": "#FFFFFF",
+  "theme_color": "#244CE9",
   "lang": "ko",
   "icons": [
     { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" },
-    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png" },
-    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" }
   ]
 }
