@@ -385,10 +385,10 @@ export function HomePage() {
                     <ArrowUpRight size={18} />
                   </span>
                   <small>{channel.lang}</small>
-                  <strong className="channel-subscribers">현재 구독자 {channel.subscribers}명</strong>
                   {channel.periodHighlight && (
                     <strong className="channel-period">{channel.periodHighlight}</strong>
                   )}
+                  <strong className="channel-subscribers">현재 구독자 {channel.subscribers}명</strong>
                 </a>
               ))}
             </div>
