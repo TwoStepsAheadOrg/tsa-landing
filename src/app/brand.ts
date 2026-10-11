@@ -115,6 +115,7 @@ export const CHANNELS = [
   {
     name: "이게 진짜라고?",
     lang: "한국어 드라마",
+    subscribers: "403",
     periodHighlight: "1주일간의 성과",
     image: "/brand/channel-ko.webp",
     href: "https://www.youtube.com/@isthisreal_drama/videos",
@@ -122,6 +123,7 @@ export const CHANNELS = [
   {
     name: "これ、本当？",
     lang: "일본어 드라마",
+    subscribers: "1.57천",
     periodHighlight: null,
     image: "/brand/channel-ja.webp",
     href: "https://www.youtube.com/@korehonto_drama/videos",
@@ -129,6 +131,7 @@ export const CHANNELS = [
   {
     name: "ORBIT MINUTE",
     lang: "SF·우주·미스터리",
+    subscribers: "2.2천",
     periodHighlight: null,
     image: "/brand/channel-orbit.webp",
     href: "https://www.youtube.com/@orbit.minute/videos",
@@ -144,10 +147,10 @@ export const INSTAGRAM_CASE = {
   metrics: [
     { value: "6.4만", label: "대표 릴스 표시 조회수" },
     { value: "약 10.1만", label: "공개 릴스 10편 조회수 합산" },
-    { value: "699", label: "공개 프로필 팔로워" },
+    { value: "1,013", label: "현재 팔로워 · 2026.10.11" },
   ],
   sourceNote:
-    "2026.10.10 공개 프로필·릴스 화면 기준. 합산 조회수는 릴스 10편의 표시값을 더한 수치이며 일부 반올림되어 있습니다.",
+    "조회수는 2026.10.10 릴스 화면, 현재 팔로워는 2026.10.11 공개 프로필 기준입니다. 합산 조회수는 릴스 10편의 표시값을 더한 수치이며 일부 반올림되어 있습니다.",
   reels: [
     {
       title: "속초라는 이름이 바위 세금 때문?",
