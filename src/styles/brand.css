@@ -1040,6 +1040,14 @@ textarea:focus-visible {
   color: var(--muted);
   margin-top: 6px;
 }
+.channels-grid .channel-subscribers {
+  display: block;
+  margin-top: 12px;
+  color: var(--blue);
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.5;
+}
 .source-note {
   font-size: 11px;
   line-height: 1.7;

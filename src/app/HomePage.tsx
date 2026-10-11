@@ -385,13 +385,14 @@ export function HomePage() {
                     <ArrowUpRight size={18} />
                   </span>
                   <small>{channel.lang}</small>
+                  <strong className="channel-subscribers">현재 구독자 {channel.subscribers}명</strong>
                   {channel.periodHighlight && (
                     <strong className="channel-period">{channel.periodHighlight}</strong>
                   )}
                 </a>
               ))}
             </div>
-            <p className="source-note">채널 화면: 2026.10.08 캡처</p>
+            <p className="source-note">현재 구독자: 2026.10.11 YouTube 공개 표시값 · 채널 화면과 1주일 성과: 2026.10.08 캡처</p>
           </div>
         </section>
         <section className="data-section" id="approach">
