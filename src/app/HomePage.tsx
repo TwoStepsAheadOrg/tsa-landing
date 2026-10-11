@@ -144,8 +144,11 @@ function InstagramCase() {
       <div className="instagram-case-copy">
         <span className="section-label">AI 콘텐츠 제작·운영 사례</span>
         <h3>{INSTAGRAM_CASE.name}</h3>
-        <h4>{INSTAGRAM_CASE.periodHighlight}<br />릴스 조회수 약 10.1만.</h4>
-        <p className="instagram-case-description">{INSTAGRAM_CASE.description}</p>
+        <h4>1주일 이내,<br />팔로워 {INSTAGRAM_CASE.metrics[2].value}명.</h4>
+        <p className="instagram-case-description">
+          <strong>{INSTAGRAM_CASE.periodHighlight}</strong><br />
+          {INSTAGRAM_CASE.description}
+        </p>
         <dl className="instagram-case-metrics">
           {INSTAGRAM_CASE.metrics.map((metric) => (
             <div key={metric.label}><dt>{metric.label}</dt><dd>{metric.value}</dd></div>
@@ -360,7 +363,7 @@ export function HomePage() {
           {showInstagramCase && <InstagramCase />}
           <div className="channels-area">
             <div>
-              <h3>세 개의 채널, 서로 다른 이야기.</h3>
+              <h3>1주일 이내에 모은 구독자.</h3>
               <p>
                 한국어·일본어 드라마와 SF·미스터리 콘텐츠를 직접 운영합니다.
               </p>
@@ -388,11 +391,11 @@ export function HomePage() {
                   {channel.periodHighlight && (
                     <strong className="channel-period">{channel.periodHighlight}</strong>
                   )}
-                  <strong className="channel-subscribers">현재 구독자 {channel.subscribers}명</strong>
+                  <strong className="channel-subscribers">구독자 {channel.subscribers}명</strong>
                 </a>
               ))}
             </div>
-            <p className="source-note">현재 구독자: 2026.10.11 YouTube 공개 표시값 · 채널 화면과 1주일 성과: 2026.10.08 캡처</p>
+            <p className="source-note">구독자 수는 2026.10.11 YouTube 공개 표시값입니다. 채널 이미지는 2026.10.08 캡처입니다.</p>
           </div>
         </section>
         <section className="data-section" id="approach">
