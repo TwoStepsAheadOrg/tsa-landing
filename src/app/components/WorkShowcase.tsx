@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type KeyboardEvent } from "react";
 import { ArrowUpRight, ArrowRight, X } from "lucide-react";
 import { CHANNELS, INSTAGRAM_CASE, WORKS } from "../brand";
 import "../../styles/work-showcase.css";
@@ -171,6 +171,20 @@ export function WorkShowcase() {
     setActiveProject(project);
   }
 
+  function keepDialogFocus(event: KeyboardEvent<HTMLDialogElement>) {
+    if (event.key !== "Tab") return;
+    const controls = event.currentTarget.querySelectorAll<HTMLElement>("button:not([disabled]), a[href]");
+    const first = controls[0];
+    const last = controls[controls.length - 1];
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last?.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first?.focus();
+    }
+  }
+
   return (
     <section className="work-showcase wrap" id="work" aria-labelledby="ws-heading">
       <div className="ws-heading-row">
@@ -192,7 +206,7 @@ export function WorkShowcase() {
         <div className="ws-channel-list">{CHANNELS.map((channel) => <a className="ws-channel" key={channel.name} href={channel.href} target="_blank" rel="noopener noreferrer"><div><span className="ws-channel-kind">{channel.lang}</span><h4>{channel.name}<ArrowUpRight size={16} aria-hidden="true" /></h4></div><div className="ws-channel-numbers"><span>구독자 <strong>{channel.subscribers}명</strong></span><small>첫 1주일 구독자 {channel.initialSubscribers}명</small></div><span className="sr-only"> (새 탭)</span></a>)}</div>
         <p className="ws-channel-source">구독자는 2026.10.13 회사 제공 업데이트입니다. 기존 수치의 1.5배를 정수로 반올림했으며, 첫 1주일의 기록과 구분해 표시했습니다.</p>
       </div>
-      <dialog ref={dialogRef} className="ws-dialog" aria-labelledby="ws-dialog-title" aria-describedby="ws-dialog-description" onCancel={(event) => { event.preventDefault(); setActiveProject(null); }} onClose={(event) => { if (!event.currentTarget.open) setActiveProject(null); }} onPointerDown={(event) => { const rect = event.currentTarget.getBoundingClientRect(); backdropPressRef.current = event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom; }} onClick={(event) => { if (event.target === event.currentTarget && backdropPressRef.current) setActiveProject(null); backdropPressRef.current = false; }}>
+      <dialog ref={dialogRef} className="ws-dialog" aria-labelledby="ws-dialog-title" aria-describedby="ws-dialog-description" onKeyDown={keepDialogFocus} onCancel={(event) => { event.preventDefault(); setActiveProject(null); }} onClose={(event) => { if (!event.currentTarget.open) setActiveProject(null); }} onPointerDown={(event) => { const rect = event.currentTarget.getBoundingClientRect(); backdropPressRef.current = event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom; }} onClick={(event) => { if (event.target === event.currentTarget && backdropPressRef.current) setActiveProject(null); backdropPressRef.current = false; }}>
         <div className="ws-dialog-content"><button ref={closeRef} className="ws-dialog-close" type="button" onClick={() => setActiveProject(null)} aria-label="프로젝트 상세 닫기"><X size={23} aria-hidden="true" /></button>{activeProject && <ProjectDetails project={activeProject} />}</div>
       </dialog>
     </section>
