@@ -3,12 +3,14 @@ import {
   ArrowDown, ArrowUpRight, Plus, Download, Heart, MessageCircle,
   Send, Bookmark, MoreHorizontal,
 } from "lucide-react";
-import { BRAND, SERVICE_ITEMS, WORKS, CHANNELS, PROCESS, INSTAGRAM_CASE, COLLABORATIONS } from "./brand";
+import { BRAND, PROCESS, COLLABORATIONS } from "./brand";
 import { SiteNav } from "./components/SiteNav";
 import { SiteFooter } from "./components/SiteFooter";
 import { BrandMark } from "./components/BrandMark";
 import { BrandContact } from "./components/BrandContact";
 import { PartnerMarquee } from "./components/PartnerMarquee";
+import { ServiceShowcase } from "./components/ServiceShowcase";
+import { WorkShowcase } from "./components/WorkShowcase";
 import { trackEvent } from "@/lib/gtag";
 function HeroArt() {
   return (
@@ -59,116 +61,8 @@ function HeroArt() {
     </div>
   );
 }
-function WorkVisual({ work }: { work: (typeof WORKS)[number] }) {
-  if (work.theme === "microwave")
-    return (
-      <div className="work-visual microwave-visual" aria-hidden="true">
-        <span className="mw-word">MICROWAVE</span>
-        <div className="conversation">
-          <span>고객은 무엇을 묻고 있을까?</span>
-          <span>우리 브랜드가 답할 차례.</span>
-        </div>
-        <span className="visual-caption">
-          글로벌 인사이트를 현지의 콘텐츠로
-        </span>
-      </div>
-    );
-  if (work.theme === "nextep")
-    return (
-      <div className="work-visual nextep-visual">
-        <div>
-          <span>다음화</span>
-          <p>
-            이야기의
-            <br />
-            다음이 있는 곳.
-          </p>
-          <small>AI drama platform</small>
-        </div>
-        <img
-          src={work.image!}
-          alt={work.alt}
-          width="360"
-          height="480"
-          loading="lazy"
-        />
-      </div>
-    );
-  if (work.theme === "telling")
-    return (
-      <div className="work-visual telling-visual">
-        <span>
-          Telling<small>나의 이야기가 되는 콘텐츠</small>
-        </span>
-        <img
-          src={work.image!}
-          alt={work.alt}
-          width="720"
-          height="960"
-          loading="lazy"
-        />
-      </div>
-    );
-  return (
-    <div className={`work-visual ${work.theme}-visual`}>
-      <img
-        src={work.image!}
-        alt={work.alt}
-        width={work.theme === "rin" ? 1000 : 754}
-        height={work.theme === "rin" ? 667 : 753}
-        loading="lazy"
-      />
-      {work.theme === "plurank" && (
-        <span className="visual-caption">
-          서비스 화면 예시 · 개별 고객의 성과 수치가 아닙니다
-        </span>
-      )}
-    </div>
-  );
-}
-function InstagramCase() {
-  return (
-    <article className="instagram-case" id="jeonseolirae">
-      <div className="instagram-reels">
-        {INSTAGRAM_CASE.reels.map((reel) => (
-          <a key={reel.href} href={reel.href} target="_blank" rel="noopener noreferrer"
-            aria-label={`${reel.title} 릴스 보기 (새 탭)`}>
-            <figure>
-              <img src={reel.image} alt={`전설이래 AI 애니메이션: ${reel.title}`}
-                width="1080" height="1920" loading="lazy" />
-              <figcaption><span>표시 조회수 {reel.views}</span><ArrowUpRight size={17} /></figcaption>
-            </figure>
-          </a>
-        ))}
-      </div>
-      <div className="instagram-case-copy">
-        <span className="section-label">AI 콘텐츠 제작·운영 사례</span>
-        <h3>{INSTAGRAM_CASE.name}</h3>
-        <h4>1주일 이내,<br />팔로워 {INSTAGRAM_CASE.metrics[2].value}명.</h4>
-        <p className="instagram-case-description">
-          <strong>{INSTAGRAM_CASE.periodHighlight}</strong><br />
-          {INSTAGRAM_CASE.description}
-        </p>
-        <dl className="instagram-case-metrics">
-          {INSTAGRAM_CASE.metrics.map((metric) => (
-            <div key={metric.label}><dt>{metric.label}</dt><dd>{metric.value}</dd></div>
-          ))}
-        </dl>
-        <p className="source-note">{INSTAGRAM_CASE.sourceNote}</p>
-        <a className="inline-link" href={INSTAGRAM_CASE.href} target="_blank" rel="noopener noreferrer">
-          {INSTAGRAM_CASE.handle}에서 보기<ArrowUpRight size={17} />
-        </a>
-      </div>
-    </article>
-  );
-}
 export function HomePage() {
-  const [filter, setFilter] = useState("전체");
   const [interest, setInterest] = useState({ value: "", revision: 0 });
-  const visible = WORKS.filter(
-    (work) => filter === "전체" || work.category === filter,
-  );
-  const showInstagramCase = filter !== "데이터·마케팅";
   return (
     <div className="brand-site" id="top">
       <SiteNav />
@@ -246,158 +140,8 @@ export function HomePage() {
             이해하기 쉬운 브랜드 콘텐츠입니다.
           </p>
         </section>
-        <section className="services-section" id="services">
-          <div className="wrap">
-            <div className="section-heading split-heading">
-              <div>
-                <span className="section-label">우리가 하는 일</span>
-                <h2>
-                  브랜드의 목표에 맞춰
-                  <br />
-                  만들고, 연결합니다.
-                </h2>
-              </div>
-              <p>
-                콘텐츠 제작부터 AI 검색과 글로벌 커뮤니티까지.
-                <br />
-                필요한 지점에서 시작해 하나의 흐름으로 연결합니다.
-              </p>
-            </div>
-            <div className="services-list">
-              {SERVICE_ITEMS.map((service) => (
-                <article key={service.title} className="service-row">
-                  <div>
-                    <h3>{service.title}</h3>
-                    <p className="service-subtitle">{service.subtitle}</p>
-                  </div>
-                  <div>
-                    <p className="service-description">{service.text}</p>
-                    <ul>
-                      {service.outputs.map((x) => (
-                        <li key={x}>{x}</li>
-                      ))}
-                    </ul>
-                    <p className="service-note">{service.note}</p>
-                  </div>
-                  <a
-                    href="#contact"
-                    className="service-link"
-                    aria-label={`${service.title} 문의`}
-                    onClick={() =>
-                      setInterest((previous) => ({
-                        value: service.interest,
-                        revision: previous.revision + 1,
-                      }))
-                    }
-                  >
-                    <ArrowUpRight size={26} />
-                  </a>
-                </article>
-              ))}
-            </div>
-          </div>
-        </section>
-        <section className="work-section wrap" id="work">
-          <div className="section-heading split-heading">
-            <div>
-              <span className="section-label">실제 작업</span>
-              <h2>
-                직접 만들고,
-                <br />
-                세상에 내놓습니다.
-              </h2>
-            </div>
-            <div
-              className="work-filters"
-              role="group"
-              aria-label="작업 분야 필터"
-            >
-              {["전체", "콘텐츠", "데이터·마케팅"].map((x) => (
-                <button
-                  type="button"
-                  aria-pressed={filter === x}
-                  key={x}
-                  onClick={() => setFilter(x)}
-                >
-                  {x}
-                </button>
-              ))}
-            </div>
-          </div>
-          <p className="sr-only" role="status">
-            {visible.length + (showInstagramCase ? 1 : 0)}개의 작업이 표시됩니다.
-          </p>
-          <div className="work-grid">
-            {visible.map((work) => (
-              <article key={work.id} className={`work-item work-${work.theme}`}>
-                <a
-                  className="work-image-link"
-                  href={work.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={`${work.cta} (새 탭)`}
-                >
-                  <WorkVisual work={work} />
-                  <span className="work-open">
-                    <ArrowUpRight size={24} />
-                  </span>
-                </a>
-                <div className="work-meta">
-                  <h3>{work.name}</h3>
-                  <span>{work.kind}</span>
-                </div>
-                <h4>{work.title}</h4>
-                <p>{work.description}</p>
-                <a
-                  className="inline-link"
-                  href={work.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {work.cta}
-                  <ArrowUpRight size={15} />
-                </a>
-              </article>
-            ))}
-          </div>
-          {showInstagramCase && <InstagramCase />}
-          <div className="channels-area">
-            <div>
-              <h3>1주일 이내에 모은 구독자.</h3>
-              <p>
-                한국어·일본어 드라마와 SF·미스터리 콘텐츠를 직접 운영합니다.
-              </p>
-            </div>
-            <div className="channels-grid">
-              {CHANNELS.map((channel) => (
-                <a
-                  key={channel.name}
-                  href={channel.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <img
-                    src={channel.image}
-                    alt={`${channel.name} 채널 화면, 2026년 10월 8일 캡처`}
-                    width="1280"
-                    height="720"
-                    loading="lazy"
-                  />
-                  <span>
-                    <strong>{channel.name}</strong>
-                    <ArrowUpRight size={18} />
-                  </span>
-                  <small>{channel.lang}</small>
-                  {channel.periodHighlight && (
-                    <strong className="channel-period">{channel.periodHighlight}</strong>
-                  )}
-                  <strong className="channel-subscribers">구독자 {channel.subscribers}명</strong>
-                </a>
-              ))}
-            </div>
-            <p className="source-note">구독자 수는 2026.10.11 YouTube 공개 표시값입니다. 채널 이미지는 2026.10.08 캡처입니다.</p>
-          </div>
-        </section>
+        <ServiceShowcase onInterest={value => setInterest(previous => ({ value, revision: previous.revision + 1 }))} />
+        <WorkShowcase />
         <section className="data-section" id="approach">
           <div className="wrap data-grid">
             <div className="section-heading">

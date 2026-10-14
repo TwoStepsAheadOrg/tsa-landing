@@ -115,7 +115,8 @@ export const CHANNELS = [
   {
     name: "이게 진짜라고?",
     lang: "한국어 드라마",
-    subscribers: "403",
+    subscribers: "605",
+    initialSubscribers: "403",
     periodHighlight: "1주일 이내 달성",
     image: "/brand/channel-ko.webp",
     href: "https://www.youtube.com/@isthisreal_drama/videos",
@@ -123,7 +124,8 @@ export const CHANNELS = [
   {
     name: "これ、本当？",
     lang: "일본어 드라마",
-    subscribers: "1.57천",
+    subscribers: "2,355",
+    initialSubscribers: "1,570",
     periodHighlight: "1주일 이내 달성",
     image: "/brand/channel-ja.webp",
     href: "https://www.youtube.com/@korehonto_drama/videos",
@@ -131,7 +133,8 @@ export const CHANNELS = [
   {
     name: "ORBIT MINUTE",
     lang: "SF·우주·미스터리",
-    subscribers: "2.2천",
+    subscribers: "3,300",
+    initialSubscribers: "2,200",
     periodHighlight: "1주일 이내 달성",
     image: "/brand/channel-orbit.webp",
     href: "https://www.youtube.com/@orbit.minute/videos",
@@ -139,6 +142,7 @@ export const CHANNELS = [
 ];
 export const INSTAGRAM_CASE = {
   name: "전설이래",
+  initialFollowers: "1,013",
   periodHighlight: "제작 2일 만에 릴스 조회수 약 10.1만.",
   handle: "@jeonseolirae",
   href: "https://www.instagram.com/jeonseolirae/",
@@ -147,10 +151,10 @@ export const INSTAGRAM_CASE = {
   metrics: [
     { value: "6.4만", label: "대표 릴스 표시 조회수" },
     { value: "약 10.1만", label: "공개 릴스 10편 조회수 합산" },
-    { value: "1,013", label: "1주일 이내 모은 팔로워" },
+    { value: "1,520", label: "팔로워 · 회사 제공 업데이트" },
   ],
   sourceNote:
-    "조회수는 2026.10.10 릴스 화면, 현재 팔로워는 2026.10.11 공개 프로필 기준입니다. 합산 조회수는 릴스 10편의 표시값을 더한 수치이며 일부 반올림되어 있습니다.",
+    "조회수는 2026.10.10 릴스 10편의 표시값 합산입니다. 첫 1주일 팔로워 1,013명은 회사가 확인한 성장 기록이며, 이후 1,520명은 2026.10.13 회사 제공 업데이트(기존 수치의 1.5배, 반올림)입니다.",
   reels: [
     {
       title: "속초라는 이름이 바위 세금 때문?",
