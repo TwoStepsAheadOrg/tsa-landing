@@ -25,10 +25,12 @@ Vite 개발 서버 자체는 Vercel `/api/inquiry` 함수를 실행하지 않습
 ```text
 src/app/
   App.tsx                  # /careers 경로 분기
-  HomePage.tsx             # 홈 섹션·포트폴리오 필터·문의 연결
+  HomePage.tsx             # 홈 섹션·문의 연결
   brand.ts                 # 현행 브랜드, 서비스, 작업, 채널, 문의 분야
   content.ts               # 채용·법인 정보 (이전 홈 자료 제거)
   components/
+    ServiceShowcase.tsx    # 서비스 탭·대표 이미지·제작 범위·문의 분야 연결
+    WorkShowcase.tsx       # 실제 작업 갤러리·필터·상세 패널·채널 성장 기록
     BrandMark.tsx          # 심벌과 워드마크
     BrandContact.tsx       # 문의 폼과 성공 시 전환 측정
     SiteNav.tsx            # 홈/채용 내비게이션·모바일 메뉴
@@ -37,6 +39,8 @@ src/app/
     CareersPage.tsx        # 문화·공고·지원서 업로드/접수
     api.ts                 # 기존 채용 API 계약
 src/styles/brand.css       # 현행 컬러·레이아웃·반응형·로컬 폰트
+src/styles/service-showcase.css # 서비스 탭 반응형 디자인
+src/styles/work-showcase.css    # 포트폴리오·상세 패널 반응형 디자인
 index.html                 # 홈 메타·JSON-LD·no-JS 소개
 careers/index.html         # 채용 메타·별도 canonical
 api/inquiry.ts             # 문의 → Slack webhook (edge runtime)

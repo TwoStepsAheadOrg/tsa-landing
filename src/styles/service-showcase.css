@@ -1,0 +1,99 @@
+.capabilities-section { padding: 104px 0 112px; background: #f4f7fd; }
+.capabilities-heading { display: flex; justify-content: space-between; align-items: flex-end; gap: 32px; margin-bottom: 48px; }
+.capabilities-heading h2 { font-size: clamp(36px, 4.2vw, 56px); letter-spacing: -.055em; line-height: 1.18; font-weight: 600; }
+.capabilities-heading > p { color: var(--muted); font-size: 16px; line-height: 1.8; word-break: keep-all; padding-bottom: 5px; }
+.capabilities-studio { display: grid; grid-template-columns: minmax(270px, .85fr) minmax(0, 1.65fr); gap: 44px; align-items: start; }
+.capability-navigation { min-width: 0; }
+.capability-tabs { display: flex; flex-direction: column; gap: 8px; }
+.capability-tabs button { width: 100%; display: flex; align-items: center; justify-content: space-between; text-align: left; gap: 16px; padding: 24px; border: 1px solid transparent; border-radius: 14px; background: transparent; color: var(--deep); transition: background .18s, color .18s; }
+.capability-tabs strong { display: block; font-size: 23px; letter-spacing: -.04em; font-weight: 600; line-height: 1.35; word-break: keep-all; }
+.capability-tabs small { display: block; margin-top: 9px; color: var(--muted); font-size: 13px; line-height: 1.6; word-break: keep-all; }
+.capability-tabs svg { flex-shrink: 0; }
+.capability-tabs button[aria-selected="true"] { background: var(--blue); color: #fff; }
+.capability-tabs button[aria-selected="true"] small { color: #e4ebff; }
+.capability-tabs button:hover:not([aria-selected="true"]) { background: #e5ecfa; }
+.capability-work-link { margin: 32px 24px 0; display: flex; align-items: center; justify-content: space-between; gap: 16px; color: var(--muted); font-size: 13px; line-height: 1.6; }
+.capability-work-link:hover { color: var(--blue); }
+.capability-panel { min-width: 0; background: #fff; border-radius: 20px; overflow: hidden; }
+.capability-panel[hidden] { display: none; }
+.capability-stage { height: 364px; padding: 30px 34px 0; overflow: hidden; position: relative; }
+.capability-stage-content { background: #dbe5f5; }
+.capability-stage-title { display: flex; justify-content: space-between; gap: 20px; align-items: start; }
+.capability-stage-title > span { font-size: 13px; padding-top: 5px; }
+.capability-stage-title > strong { font-weight: 600; font-size: 29px; line-height: 1.25; letter-spacing: -.045em; text-align: right; }
+.capability-filmstrip { display: grid; grid-template-columns: 1fr 1.05fr 1fr; gap: 18px; height: 264px; margin: 24px 20px 0; align-items: start; }
+.capability-filmstrip figure { position: relative; height: 245px; border-radius: 8px 8px 0 0; overflow: hidden; }
+.capability-filmstrip figure:first-child { transform: rotate(-7deg) translateY(16px); }
+.capability-filmstrip figure:last-child { transform: rotate(7deg) translateY(16px); }
+.capability-filmstrip img { height: 100%; width: 100%; object-fit: cover; object-position: 50% 25%; }
+.capability-filmstrip figcaption { position: absolute; bottom: 18px; left: 12px; color: #fff; background: #161b32de; border-radius: 5px; padding: 5px 9px; font-size: 12px; }
+.capability-stage-data { background: #244ce9; color: #fff; }
+.capability-data-preview { display: grid; grid-template-columns: .6fr 1.4fr; gap: 20px; margin-top: 28px; }
+.capability-observation { display: flex; flex-direction: column; padding-top: 12px; gap: 20px; }
+.capability-observation strong { font-size: 36px; font-weight: 600; line-height: 1; }
+.capability-observation small { font-size: 15px; margin-left: 8px; }
+.capability-observation > span { font-size: 10px; color: #d9e3ff; line-height: 1.6; }
+.capability-data-preview figure { position: relative; height: 240px; overflow: hidden; border-radius: 9px 9px 0 0; }
+.capability-data-preview img { width: 100%; }
+.capability-data-preview figcaption { position: absolute; bottom: 0; width: 100%; padding: 8px; font-size: 11px; text-align: center; background: #fff; color: var(--muted); }
+.capability-stage-global { background: #e8eef9; }
+.capability-community { padding: 28px 0 20px; }
+.capability-platform { display: block; font-size: 55px; line-height: 1; font-weight: 600; letter-spacing: -.07em; color: var(--blue); }
+.capability-community p { font-size: 15px; line-height: 1.6; margin-top: 14px; color: #364263; }
+.capability-community ol { display: flex; list-style: none; padding: 0; gap: 10px; margin-top: 21px; }
+.capability-community li { flex: 1; text-align: center; background: #fff; border-radius: 6px; padding: 12px 8px; font-size: 12px; color: #334365; }
+.capability-community li:last-child { background: var(--blue); color: #fff; }
+.capability-details { padding: 28px 34px; }
+.capability-description { font-size: 16px; line-height: 1.85; word-break: keep-all; color: #3b465e; }
+.capability-details ul { display: flex; flex-wrap: wrap; gap: 10px 18px; margin: 20px 0 26px; padding: 0; list-style: none; }
+.capability-details li { display: flex; align-items: center; gap: 6px; font-size: 12px; }
+.capability-details li svg { color: var(--blue); }
+.capability-panel-footer { display: flex; gap: 22px; justify-content: space-between; align-items: flex-start; border-top: 1px solid #e5eaf3; padding-top: 20px; }
+.capability-panel-footer > p { flex: 1; font-size: 11px; color: var(--muted); line-height: 1.7; word-break: keep-all; }
+.capability-panel-footer > a { display: flex; gap: 9px; align-items: center; white-space: nowrap; font-size: 13px; font-weight: 600; padding: 4px 0 6px; color: var(--blue); }
+@media (max-width: 1000px) {
+  .capabilities-studio { grid-template-columns: minmax(220px, .85fr) minmax(0,1.4fr); gap: 24px; }
+  .capability-tabs button { padding: 22px 16px; }
+  .capability-tabs strong { font-size: 20px; }
+  .capability-stage { padding-inline: 24px; }
+  .capability-stage-title > strong { font-size: 24px; }
+  .capability-details { padding: 24px; }
+  .capability-filmstrip { margin-inline: 0; gap: 10px; }
+}
+@media (max-width: 760px) {
+  .capabilities-section { padding-block: 68px; }
+  .capabilities-heading { display: block; margin-bottom: 30px; }
+  .capabilities-heading > p { margin-top: 22px; font-size: 14px; }
+  .capabilities-studio { grid-template-columns: 1fr; gap: 20px; }
+  .capability-tabs { flex-direction: row; gap: 6px; }
+  .capability-tabs button { flex: 1; min-width: 0; padding: 14px 8px; justify-content: center; border: 1px solid #d7e0f2; border-radius: 9px; text-align: center; min-height: 68px; }
+  .capability-tabs strong { font-size: 14px; line-height: 1.45; }
+  .capability-tabs small, .capability-tabs svg, .capability-work-link { display: none; }
+  .capability-stage { height: 328px; padding: 24px 22px 0; }
+  .capability-stage-title > span { font-size: 11px; }
+  .capability-stage-title > strong { font-size: 24px; }
+  .capability-filmstrip { margin-top: 22px; }
+  .capability-filmstrip figure { height: 230px; }
+  .capability-filmstrip figcaption { bottom: 40px; left: 7px; font-size: 10px; }
+  .capability-description { font-size: 14px; }
+  .capability-details { padding: 23px 22px; }
+  .capability-details ul { gap: 10px 12px; margin-block: 17px 21px; }
+  .capability-panel-footer { flex-direction: column; gap: 12px; }
+  .capability-data-preview { grid-template-columns: .7fr 1.3fr; gap: 10px; }
+  .capability-observation strong { font-size: 32px; }
+  .capability-observation small { font-size: 12px; }
+  .capability-data-preview figure { height: 213px; }
+  .capability-data-preview img { height: 100%; object-fit: cover; object-position: left top; }
+  .capability-platform { font-size: 48px; }
+  .capability-community { padding-top: 22px; }
+  .capability-community p { font-size: 13px; }
+  .capability-community ol { gap: 6px; }
+  .capability-community li { font-size: 11px; padding-inline: 4px; }
+}
+@media (max-width: 380px) {
+  .capability-stage { height: 360px; }
+  .capability-stage-title { display: block; }
+  .capability-stage-title > span { display: block; }
+  .capability-stage-title > strong { display: block; margin-top: 8px; font-size: 22px; text-align: left; word-break: keep-all; }
+}
+@media (prefers-reduced-motion: reduce) { .capability-tabs button { transition: none; } }
