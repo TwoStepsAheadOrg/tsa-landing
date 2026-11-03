@@ -210,6 +210,32 @@ body:has(.gx) {
   position: relative;
   padding-block: calc(var(--header) + 80px) clamp(72px, 10vh, 112px);
 }
+/* 제목 위 인증 배지: 어두운 첫 화면에서 눈에 띄는 초록 하나만 쓴다 */
+.gx-hero-badges {
+  list-style: none;
+  margin: 0 0 22px;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.gx-hero-badges li {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px 6px 9px;
+  border: 1px solid rgba(74, 222, 128, 0.38);
+  border-radius: 999px;
+  background: rgba(8, 36, 22, 0.92);
+  color: #86efac;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.gx-hero-badges svg {
+  flex: none;
+  color: #4ade80;
+}
 .gx-hero h1 {
   display: flex;
   flex-direction: column;

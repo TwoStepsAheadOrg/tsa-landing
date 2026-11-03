@@ -10,6 +10,8 @@ export const HERO = {
   title: "Global Growth Partner",
   sub: "어디서 통할지 먼저 확인하고, 그 시장에서 키웁니다.",
   lead: "투스텝스어헤드는 진출 전략부터 레딧, 인플루언서, 광고, 해외 커머스 운영까지 직접 맡습니다.",
+  /** 제목 바로 위 초록 배지(대표 11/3). 근거: 2026 한국관광공사 초기관광벤처, 벤처기업 인증(FACTS와 같은 사실) */
+  badges: ["관광벤처 선정기업", "벤처인증기업"],
 };
 
 export type Owner = "plurank" | "microwave";
