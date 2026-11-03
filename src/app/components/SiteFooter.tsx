@@ -1,4 +1,3 @@
-import { BRAND } from "../brand";
 import { FOOTER } from "../content";
 import { BrandLogo } from "./BrandMark";
 export function SiteFooter() {
@@ -10,15 +9,15 @@ export function SiteFooter() {
             <a href="/" aria-label="TwoStepsAhead 홈">
               <BrandLogo />
             </a>
-            <p>데이터에서 시작해, 다음의 가능성으로.</p>
           </div>
           <div className="footer-links">
-            <a href={BRAND.pdf} download>
-              회사 소개서 PDF
+            <a href="https://plurank.com" target="_blank" rel="noopener">
+              Plurank
+            </a>
+            <a href="https://microwave.ai.kr" target="_blank" rel="noopener">
+              MICROWAVE
             </a>
             <a href="/careers/">채용</a>
-            <a href="/ownnext/">크리에이터 사업 · OWNNEXT</a>
-            <a href={`mailto:${BRAND.email}`}>이메일 문의</a>
           </div>
         </div>
         <div className="footer-bottom">

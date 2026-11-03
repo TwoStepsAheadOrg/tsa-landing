@@ -14,8 +14,9 @@ const MAX_LEN = 4000;
 
 const INTEREST_LABEL: Record<string, string> = {
   content: 'AI 콘텐츠·모델 제작',
-  geo: 'AI 검색·브랜드 콘텐츠 (AEO/GEO)',
-  global: '글로벌·Reddit 마케팅',
+  geo: 'AI 답변 측정·GEO (Plurank)',
+  global: '레딧·해외 마케팅 (MICROWAVE)',
+  influencer: '해외 인플루언서·방한 체험단 (MICROWAVE)',
   creator: '크리에이터 사업 · OWNNEXT',
   ax: 'AX 도입 · AI 상담/자동화/에이전트',
   dx: 'DX 구축 · SaaS/관제/CRM 개발',

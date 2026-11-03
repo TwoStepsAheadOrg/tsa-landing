@@ -9,7 +9,7 @@ export function PartnerMarquee() {
     <section className="partner-marquee" aria-labelledby="partner-marquee-heading">
       <div className="wrap">
         <div className="partner-marquee-heading">
-          <h2 id="partner-marquee-heading">함께한 브랜드와 파트너</h2>
+          <h2 id="partner-marquee-heading">함께한 브랜드</h2>
           <button
             type="button"
             className="partner-marquee-toggle"
