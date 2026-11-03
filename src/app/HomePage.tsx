@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { ArrowDown, ArrowUpRight, Menu, Plus, RotateCcw, X } from "lucide-react";
+import { ArrowDown, ArrowUpRight, BadgeCheck, Menu, Plus, RotateCcw, X } from "lucide-react";
 import { BRAND_NAV } from "./brand";
 import { HERO, OWNERS, FLOW, MARKETS, FAQ, FACTS, STORY } from "./global";
 import type { Owner } from "./global";
@@ -165,6 +165,14 @@ export function HomePage() {
         <section className="gx-hero" id="gx-hero" aria-labelledby="gx-hero-title">
           <HeroGlobe />
           <div className="gx-hero-copy gx-wrap">
+            <ul className="gx-hero-badges" aria-label="인증">
+              {HERO.badges.map((badge) => (
+                <li key={badge}>
+                  <BadgeCheck size={15} aria-hidden="true" />
+                  {badge}
+                </li>
+              ))}
+            </ul>
             <h1 id="gx-hero-title">
               <span className="gx-hero-main" lang="en">{HERO.title}</span>
               <span className="gx-hero-sub">{HERO.sub}</span>
