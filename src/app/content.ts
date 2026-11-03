@@ -53,10 +53,12 @@ export const CAREERS = {
 export const FOOTER = {
   corp: "주식회사 투스텝스어헤드",
   lines: [
-    "대표 김건희 · 사업자등록번호 319-87-03770",
+    "대표 김건희",
+    "사업자등록번호 319-87-03770",
     "통신판매업신고 2025-서울강남-05963",
     "서울특별시 마포구 양화로 186, 6층 607호(동교동, LC TOWER 스파크플러스)",
-    "glenn.kim@twostepsahead.co.kr · 010-9990-7868",
+    "glenn.kim@twostepsahead.co.kr",
+    "010-9990-7868",
   ],
   copyright: "© 2026 TwoStepsAhead Co., Ltd. All rights reserved.",
 };

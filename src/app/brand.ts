@@ -1,17 +1,17 @@
 /** Public brand copy. Evidence dates refer to the supplied 2026-10-08 company profile. */
 export const BRAND = {
   name: "TwoStepsAhead",
-  tagline: "데이터 기반으로 AI 콘텐츠를 만들고, AI가 좋아하는 광고를 만듭니다.",
+  tagline: "Global Growth Partner. 어디서 통할지 먼저 확인하고, 그 시장에서 키웁니다.",
   description:
-    "고객이 무엇을 묻는지, AI가 어떤 출처를 참고하는지 분석합니다. 그 근거로 콘텐츠를 만들고, 브랜드가 발견되는 경로를 설계합니다.",
+    "투스텝스어헤드는 진출 전략부터 레딧, 인플루언서, 광고, 해외 커머스 운영까지 직접 맡습니다.",
   email: "glenn.kim@twostepsahead.co.kr",
   pdf: "/TwoStepsAhead-Company.pdf",
 };
 export const BRAND_NAV = [
-  { label: "우리가 하는 일", href: "#services" },
-  { label: "실제 작업", href: "#work" },
-  { label: "데이터와 방식", href: "#approach" },
-  { label: "팀 소개", href: "#team" },
+  { label: "이야기", href: "#story" },
+  { label: "일하는 방식", href: "#how" },
+  { label: "시장", href: "#markets" },
+  { label: "자주 묻는 질문", href: "#faq" },
 ];
 export const SERVICE_ITEMS = [
   {
@@ -195,12 +195,6 @@ export const COLLABORATIONS = [
     scope: "AI 검색 데이터 협업",
   },
   {
-    name: "아워마케팅",
-    logo: "/brand/partners/ourmarketing-logo.png",
-    width: 788, height: 250, recent: false,
-    scope: "AI 가시성 모니터링·분석 리포트",
-  },
-  {
     name: "셀라벤토",
     logo: "/brand/partners/selavento-logo.png",
     width: 697, height: 697, recent: false,
@@ -230,12 +224,13 @@ export const PROCESS = [
   },
 ];
 export const INTEREST_OPTIONS = [
-  { value: "content", label: "AI 콘텐츠·모델 제작" },
-  { value: "geo", label: "AI 검색·브랜드 콘텐츠 (AEO/GEO)" },
-  { value: "global", label: "글로벌·Reddit 마케팅" },
-  { value: "ax", label: "AI 시스템·자동화 구축" },
+  { value: "global", label: "레딧 마케팅 (MICROWAVE)" },
+  { value: "influencer", label: "해외 인플루언서와 방한 체험단 (MICROWAVE)" },
+  { value: "geo", label: "AI 검색 분석과 GEO (Plurank)" },
+  { value: "content", label: "AI 콘텐츠 제작" },
+  { value: "ax", label: "AI 시스템 구축" },
   { value: "edu", label: "기업 AI 교육" },
-  { value: "studio", label: "사업·콘텐츠 협업" },
-  { value: "creator", label: "크리에이터 사업 · OWNNEXT" },
+  { value: "studio", label: "사업 협업" },
+  { value: "creator", label: "크리에이터 사업 OWNNEXT" },
   { value: "other", label: "기타" },
 ];

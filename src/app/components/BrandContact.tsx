@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import type { FormEvent } from "react";
-import { Check, Send } from "lucide-react";
+import { Check, ChevronDown, Send } from "lucide-react";
 import { BRAND, INTEREST_OPTIONS } from "../brand";
 import { trackAdsConversion, trackEvent } from "@/lib/gtag";
 const initial = {
   name: "",
   company: "",
   email: "",
-  interest: "content",
+  interest: "global",
   message: "",
   _hp: "",
 };
@@ -66,33 +66,20 @@ export function BrandContact({
     <section className="contact-section" id="contact">
       <div className="wrap contact-grid">
         <div className="contact-intro">
-          <span className="section-label">함께 만들 다음</span>
           <h2>
-            우리 브랜드의
+            어느 시장부터
             <br />
-            다음 한 걸음,
-            <br />
-            같이 찾을까요?
+            시작할까요?
           </h2>
           <p>
-            브랜드와 목표, 궁금한 점을 알려주세요.
+            브랜드와 사이트 주소, 목표 시장을 남겨 주세요.
             <br />
-            데이터 진단부터 콘텐츠 제작과 운영까지
+            지금 AI 검색에서 어떻게 보이는지
             <br />
-            필요한 시작점을 함께 정리합니다.
+            무료로 진단해 드립니다.
           </p>
           <a className="contact-email" href={`mailto:${BRAND.email}`}>
             {BRAND.email}
-          </a>
-          <a
-            className="pdf-link"
-            href={BRAND.pdf}
-            download
-            onClick={() =>
-              trackEvent("company_profile_download", { location: "contact" })
-            }
-          >
-            회사 소개서 PDF 받기
           </a>
         </div>
         <div className="contact-form-panel">
@@ -114,7 +101,7 @@ export function BrandContact({
             </div>
           ) : (
             <form onSubmit={submit}>
-              <h3>프로젝트에 대해 들려주세요.</h3>
+              <h3>문의 내용을 남겨 주세요.</h3>
               <p className="required-note">* 필수 입력 항목</p>
               <div className="form-row">
                 <label>
@@ -157,17 +144,20 @@ export function BrandContact({
               </label>
               <label>
                 관심 분야
-                <select
-                  name="interest"
-                  value={form.interest}
-                  onChange={(e) => field("interest", e.target.value)}
-                >
-                  {INTEREST_OPTIONS.map((o) => (
-                    <option value={o.value} key={o.value}>
-                      {o.label}
-                    </option>
-                  ))}
-                </select>
+                <span className="select-wrap">
+                  <select
+                    name="interest"
+                    value={form.interest}
+                    onChange={(e) => field("interest", e.target.value)}
+                  >
+                    {INTEREST_OPTIONS.map((o) => (
+                      <option value={o.value} key={o.value}>
+                        {o.label}
+                      </option>
+                    ))}
+                  </select>
+                  <ChevronDown size={18} aria-hidden="true" />
+                </span>
               </label>
               <label>
                 문의 내용 *
@@ -179,7 +169,7 @@ export function BrandContact({
                   rows={4}
                   value={form.message}
                   onChange={(e) => field("message", e.target.value)}
-                  placeholder="브랜드, 프로젝트 목표, 일정 등 편하게 남겨주세요. (10자 이상)"
+                  placeholder="브랜드, 사이트 주소, 목표 시장과 일정을 남겨 주세요. (10자 이상)"
                 />
               </label>
               <div className="form-trap" aria-hidden="true">
