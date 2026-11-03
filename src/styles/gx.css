@@ -347,18 +347,54 @@ body:has(.gx) {
 }
 .gx-film-steps li {
   position: relative;
-  display: grid;
-  align-content: start;
-  gap: 4px;
-  padding: 14px 16px 16px;
+  overflow: hidden;
   border-radius: 12px;
   background: var(--mist);
   color: var(--mute);
   transition: background-color 0.3s ease, color 0.3s ease;
 }
+.gx-film-steps li:not(.is-active):hover {
+  background: var(--line);
+  color: var(--ink);
+}
 .gx-film-steps li.is-active {
   background: var(--ink);
   color: #fff;
+}
+/* 카드 전체가 그 장면으로 넘기는 버튼 */
+.gx-film-steps button {
+  display: grid;
+  align-content: start;
+  gap: 4px;
+  width: 100%;
+  height: 100%;
+  padding: 14px 16px 16px;
+  border: 0;
+  border-radius: 12px;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.gx-film-steps button:focus-visible {
+  outline-offset: -2px;
+  border-radius: 12px;
+}
+/* 지금 장면 카드 밑줄: 장면 안에서 지난 만큼 찬다(--p는 영상 시간에서) */
+.gx-film-steps li.is-active::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 3px;
+  background: var(--blue-bright);
+  transform: scaleX(var(--p, 0));
+  transform-origin: left;
+}
+.gx-film.is-still .gx-film-steps li::after {
+  display: none;
 }
 .gx-film-steps li.is-active .gx-owner {
   color: #fff;

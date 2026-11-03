@@ -15,11 +15,20 @@ function OwnerTag({ owner }: { owner: Owner }) {
   return <span className={`gx-owner is-${owner}`}>{OWNERS[owner].name}</span>;
 }
 
+/** 영상 길이를 자막 수로 나눈 한 장면 길이(길이를 모르면 film.seconds) */
+function partOf(el: HTMLVideoElement) {
+  const { film } = STORY;
+  return Number.isFinite(el.duration) && el.duration > 0 ? el.duration / film.captions.length : film.seconds;
+}
+
 function StoryFilm() {
   const video = useRef<HTMLVideoElement>(null);
+  const steps = useRef<HTMLOListElement>(null);
   const [active, setActive] = useState(0);
   const [leaving, setLeaving] = useState(false);
   const [still, setStill] = useState(false);
+  // 카드를 누를 때마다 바꿔 위 글자 애니메이션을 처음부터 다시 그린다
+  const [take, setTake] = useState(0);
   const { film } = STORY;
   useEffect(() => {
     const el = video.current;
@@ -30,18 +39,22 @@ function StoryFilm() {
       el.pause();
       return;
     }
-    // 영상 길이를 자막 수로 나눠 장면을 정한다(길이를 모르면 film.seconds). 컷 0.35초 전에 위 글자를 먼저 내린다
+    // 장면을 정하고, 컷 0.35초 전에 위 글자를 먼저 내린다. 지금 카드 밑줄(--p)은 장면 안에서 지난 비율
     const n = film.captions.length;
     let frame = 0;
     const tick = () => {
-      const part = Number.isFinite(el.duration) && el.duration > 0 ? el.duration / n : film.seconds;
+      const part = partOf(el);
       const beat = Math.min(n - 1, Math.floor(el.currentTime / part));
       setActive(beat);
       setLeaving(el.currentTime - beat * part > part - 0.35);
+      steps.current?.style.setProperty("--p", String(Math.min(1, (el.currentTime - beat * part) / part)));
       frame = requestAnimationFrame(tick);
     };
-    // 영상을 못 불러오면 첫 장면 그림과 자막만 보여 준다
-    const fail = () => setStill(true);
+    // 영상을 못 불러오면 첫 장면 그림과 자막만 보여 준다. 카드를 누르면 위 글자만 그 장면으로 바뀐다
+    const fail = () => {
+      cancelAnimationFrame(frame);
+      setStill(true);
+    };
     el.addEventListener("error", fail, true);
     frame = requestAnimationFrame(tick);
     el.play().catch(() => undefined);
@@ -50,6 +63,19 @@ function StoryFilm() {
       el.removeEventListener("error", fail, true);
     };
   }, [film]);
+  // 아래 카드를 누르면 그 장면 처음으로 넘겨 재생한다. 동작 줄이기 설정이면 그 장면 가운데 그림에서 멈춘다
+  const show = (i: number) => {
+    const el = video.current;
+    if (el) {
+      const part = partOf(el);
+      el.currentTime = i * part + (still ? part / 2 : 0.05);
+      if (!still) el.play().catch(() => undefined);
+    }
+    setActive(i);
+    setLeaving(false);
+    setTake((t) => t + 1);
+    trackEvent("story_film_step", { step: i + 1 });
+  };
   return (
     <figure className={`gx-film${still ? " is-still" : ""}`}>
       <div className="gx-film-stage">
@@ -65,14 +91,16 @@ function StoryFilm() {
         >
           <source src={film.src} type="video/mp4" />
         </video>
-        <StoryOverlay beat={still ? 0 : active} leaving={!still && leaving} />
+        <StoryOverlay key={take} beat={active} leaving={!still && leaving} />
       </div>
-      <ol className="gx-film-steps">
+      <ol ref={steps} className="gx-film-steps">
         {film.captions.map((c, i) => (
-          <li key={c.text} className={!still && i === active ? "is-active" : undefined}>
-            <span className="gx-film-no">{i + 1}</span>
-            <span className="gx-film-text">{c.text}</span>
-            {c.owner && <OwnerTag owner={c.owner} />}
+          <li key={c.text} className={i === active && (!still || take > 0) ? "is-active" : undefined}>
+            <button type="button" onClick={() => show(i)} aria-current={i === active ? "step" : undefined} aria-label={`${i + 1}번 장면부터 보기: ${c.text}`}>
+              <span className="gx-film-no">{i + 1}</span>
+              <span className="gx-film-text">{c.text}</span>
+              {c.owner && <OwnerTag owner={c.owner} />}
+            </button>
           </li>
         ))}
       </ol>
