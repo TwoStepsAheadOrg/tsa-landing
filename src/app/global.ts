@@ -189,8 +189,200 @@ const FNB: Story = {
   },
 };
 
+const MED: Story = {
+  id: "med",
+  tab: "병의원 해외 마케팅",
+  title: "해외에 알리고 싶은 피부과 의원이 있습니다.",
+  company: "투스텝 클리닉",
+  intro: "서울의 피부과 의원입니다. 외국인 문의가 가끔 들어오는데, 다국어 안내도 없고 광고를 어디까지 해도 되는지도 모릅니다. 세 가지를 모릅니다.",
+  steps: [
+    {
+      q: "해외에서 한국 피부과를 찾는 사람은 어디서 묻나요?",
+      beats: [
+        { owner: "plurank", text: "14개국 AI 답변에 한국 피부과 진료를 물었을 때 어떤 병원과 출처가 나오는지 찾습니다. 여기까지가 무료 진단입니다." },
+        { owner: "microwave", text: "그 결과로 채널을 고릅니다. 미국은 레딧 스킨케어 게시판, 중국은 샤오홍슈, 일본은 인스타그램. 레딧 글은 병원 소속을 밝히고 사람이 직접 답합니다." },
+      ],
+      link: { label: "시장별 채널 보기", href: "#markets" },
+    },
+    {
+      q: "해외에 병원을 알리려면 의료광고는 어디까지 할 수 있나요?",
+      beats: [
+        { owner: "plurank", text: "의료광고 기준과 사전 심의 대상 여부, 현지 광고 규정, 전후 사진과 치료 후기 표현 기준을 체크리스트로 만들고 변호사 팀원이 먼저 봅니다." },
+        { owner: "plurank", text: "다국어 안내 페이지와 소개 문안 준비를 돕습니다. 심의 신청과 등록은 병원 이름으로 하고, 문의와 예약은 병원이 직접 받고 답합니다." },
+      ],
+      link: { label: "무료 진단 받기", href: "#contact" },
+    },
+    {
+      q: "글은 올렸는데 문의가 정말 늘었는지 어떻게 보나요?",
+      beats: [
+        { owner: "microwave", text: "레딧에는 병원 소속을 밝히고 사람이 직접 답합니다. 샤오홍슈와 인스타그램 병원 계정에는 검토를 거친 문안만 올리고 다국어 문의 창구로 연결합니다." },
+        { owner: "plurank", text: "노출, 클릭, 문의, 예약을 매달 리포트로 보고 다음 채널을 정합니다." },
+      ],
+      proof: "한 테크 스타트업의 레딧 광고는 3주 남짓 동안 노출 약 260만 회, 클릭 약 1만 6,400회를 냈습니다. 업종마다 결과는 다르지만, 이런 숫자를 매달 보고 다음을 정합니다.",
+    },
+  ],
+  closing: "투스텝 클리닉이 밟은 순서가 곧 우리가 일하는 순서입니다. 법률 검토와 광고 기준 준비부터 해외 문의까지, 처음부터 끝까지 함께합니다.",
+  film: {
+    src: "/video/story-med.mp4",
+    poster: "/video/story-med-poster.jpg",
+    captions: [
+      { text: "진료는 자신 있는데 해외는 처음입니다" },
+      { text: "어디서 병원을 찾는지 봅니다", owner: "plurank" },
+      { text: "광고 심의 준비를 돕습니다", owner: "plurank" },
+      { text: "레딧 답변부터 실행합니다", owner: "microwave" },
+      { text: "예약까지 숫자로 봅니다", owner: "plurank" },
+    ],
+    seconds: 4.8,
+    label: "가상의 피부과 의원이 해외 마케팅을 준비하는 과정을 보여 주는 애니메이션. 아래 글과 같은 내용입니다.",
+    overlay: {
+      questions: ["어디서?", "광고는?", "문의는?"],
+      scan: { figure: 14, unit: "개국", line: "AI 답변에 한국 피부과를 묻고 비교합니다", engines: ["ChatGPT", "Perplexity", "네이버 AI 브리핑"], tag: "무료 진단" },
+      prep: { title: "법률 검토와 광고 기준 준비", items: ["의료광고 기준과 사전 심의 대상", "현지 광고 규정과 전후 사진 표현", "치료 후기 표현 기준"], tag: "변호사 팀원이 먼저 봅니다" },
+      run: {
+        title: "레딧 스킨케어 게시판부터",
+        pins: [
+          { label: "미국 레딧", lat: 39, lon: -98, on: true, dir: "up" },
+          { label: "중국 샤오홍슈", lat: 34, lon: 108, dir: "down" },
+          { label: "일본 인스타그램", lat: 36, lon: 139, dir: "up" },
+        ],
+      },
+      funnel: { steps: ["노출", "클릭", "문의", "예약"], check: "AI 답변에 등장", tag: "매달 리포트" },
+      order: ["questions", "scan", "prep", "run", "funnel"],
+      right: ["prep", "run", "funnel"],
+    },
+  },
+};
+
+const TOUR: Story = {
+  id: "tour",
+  tab: "관광",
+  title: "해외 손님을 더 모으고 싶은 체험 투어 회사가 있습니다.",
+  company: "투스텝 투어",
+  intro: "서울 한옥에서 다도와 골목 걷기 체험을 여는 작은 회사입니다. 지나다 들어온 외국인은 좋아하는데, 여행을 준비하며 미리 찾아 예약하는 손님은 드뭅니다. 세 가지를 모릅니다.",
+  steps: [
+    {
+      q: "한국에서 체험할 곳을 찾는 여행자는 어디서 묻나요?",
+      beats: [
+        { owner: "plurank", text: "14개국 AI 답변에 서울 전통 체험과 소규모 투어를 물었을 때 어떤 업체와 출처가 나오는지 찾습니다. 여기까지가 무료 진단입니다." },
+        { owner: "microwave", text: "그 결과로 채널을 고릅니다. 미국은 레딧 여행 게시판, 일본은 인스타그램, 이미 한국에 온 외국인은 방한 체험단. 레딧 글은 소속을 밝히고 사람이 직접 답합니다." },
+      ],
+      link: { label: "시장별 채널 보기", href: "#markets" },
+    },
+    {
+      q: "외국인 손님을 받으려면 등록과 환불 규정은 어떻게 준비하나요?",
+      beats: [
+        { owner: "plurank", text: "여행업 등록 범위, 환불 규정과 가격 표시, 해외 예약 플랫폼의 입점 정책과 손님 개인정보 처리를 체크리스트로 만들고 변호사 팀원이 먼저 봅니다." },
+        { owner: "plurank", text: "다국어 안내문과 약관 문안 준비를 돕습니다. 등록과 플랫폼 계정은 회사 이름으로 합니다." },
+      ],
+      link: { label: "무료 진단 받기", href: "#contact" },
+    },
+    {
+      q: "예약은 어디서 받고, 손님이 늘었는지 어떻게 보나요?",
+      beats: [
+        { owner: "microwave", text: "해외 예약 플랫폼에 입점하고 다국어 예약 페이지를 운영합니다. 방한 체험단 후기는 협찬 표시를 달고 올립니다." },
+        { owner: "plurank", text: "노출, 클릭, 예약, 후기를 매달 리포트로 보고 다음 채널을 정합니다." },
+      ],
+      proof: "한 테크 스타트업의 레딧 광고는 3주 남짓 동안 노출 약 260만 회, 클릭 약 1만 6,400회를 냈습니다. 업종마다 결과는 다르지만, 이런 숫자를 매달 보고 다음을 정합니다.",
+    },
+  ],
+  closing: "투스텝 투어가 밟은 순서가 곧 우리가 일하는 순서입니다. 법률 검토와 등록 준비부터 해외 예약까지, 처음부터 끝까지 함께합니다.",
+  film: {
+    src: "/video/story-tour.mp4",
+    poster: "/video/story-tour-poster.jpg",
+    captions: [
+      { text: "체험은 좋은데 해외에선 아직 모릅니다" },
+      { text: "여행자가 어디서 찾는지 봅니다", owner: "plurank" },
+      { text: "등록과 환불 규정 준비를 돕습니다", owner: "plurank" },
+      { text: "예약 플랫폼부터 실행합니다", owner: "microwave" },
+      { text: "후기까지 숫자로 봅니다", owner: "plurank" },
+    ],
+    seconds: 4.8,
+    label: "가상의 체험 투어 회사가 해외 손님 모으기를 준비하는 과정을 보여 주는 애니메이션. 아래 글과 같은 내용입니다.",
+    overlay: {
+      questions: ["어디서?", "등록은?", "예약은?"],
+      scan: { figure: 14, unit: "개국", line: "AI 답변에 서울 전통 체험을 묻고 비교합니다", engines: ["ChatGPT", "Perplexity", "네이버 AI 브리핑"], tag: "무료 진단" },
+      prep: { title: "법률 검토와 등록 준비", items: ["여행업 등록 범위 확인", "환불 규정과 가격 표시", "예약 플랫폼 정책과 개인정보"], tag: "변호사 팀원이 먼저 봅니다" },
+      run: {
+        title: "해외 예약 플랫폼 입점부터",
+        pins: [
+          { label: "미국 레딧", lat: 39, lon: -98, on: true, dir: "up" },
+          { label: "일본 인스타그램", lat: 36, lon: 139, dir: "up" },
+          { label: "방한 체험단", lat: 37.5, lon: 127, dir: "down" },
+        ],
+      },
+      funnel: { steps: ["노출", "클릭", "예약", "후기"], check: "AI 답변에 등장", tag: "매달 리포트" },
+      order: ["questions", "scan", "prep", "run", "funnel"],
+      right: ["prep", "run", "funnel"],
+    },
+  },
+};
+
+const IT: Story = {
+  id: "it",
+  tab: "IT 서비스",
+  title: "해외로 나가고 싶은 소프트웨어 회사가 있습니다.",
+  company: "투스텝 소프트",
+  intro: "작은 매장의 예약과 재고를 관리하는 앱을 만듭니다. 국내 가입자는 느는데, 영어판을 열기 전에 세 가지를 모릅니다.",
+  steps: [
+    {
+      q: "해외 사용자는 우리 같은 도구를 어디서 찾나요?",
+      beats: [
+        { owner: "plurank", text: "14개국 AI 답변에 소규모 매장용 예약과 재고 관리 도구를 물었을 때 어떤 서비스와 출처가 나오는지 찾습니다. 여기까지가 무료 진단입니다." },
+        { owner: "microwave", text: "그 결과로 채널을 고릅니다. 미국은 레딧 소상공인 게시판과 크리에이터 리뷰, 유럽은 링크드인, 일본은 X. 레딧 글은 개발팀 소속을 밝히고 사람이 직접 답합니다." },
+      ],
+      link: { label: "시장별 채널 보기", href: "#markets" },
+    },
+    {
+      q: "해외에 열면 개인정보와 약관은 어떻게 준비하나요?",
+      beats: [
+        { owner: "plurank", text: "개인정보 처리방침(EU GDPR, 미국 CCPA), 이용약관, 앱 마켓 정책, 데이터 보관 위치를 체크리스트로 만들고 변호사 팀원이 먼저 봅니다." },
+        { owner: "plurank", text: "영어 약관과 동의 화면 문안 준비를 돕습니다. 앱 마켓 등록과 계약은 회사 이름으로 합니다." },
+      ],
+      link: { label: "무료 진단 받기", href: "#contact" },
+    },
+    {
+      q: "가입은 늘어도 돈을 내는지, 계속 쓰는지는 어떻게 보나요?",
+      beats: [
+        { owner: "microwave", text: "레딧에는 개발팀 소속을 밝히고 사람이 직접 답합니다. 크리에이터 리뷰는 협찬 표시를 달아 올리고, 링크드인 광고는 작게 시작합니다." },
+        { owner: "plurank", text: "노출, 가입, 유료 전환, 유지를 매달 리포트로 보고 다음 채널을 정합니다." },
+      ],
+      proof: "한 테크 스타트업의 레딧 광고는 3주 남짓 동안 노출 약 260만 회, 클릭 약 1만 6,400회를 냈습니다. 업종마다 결과는 다르지만, 이런 숫자를 매달 보고 다음을 정합니다.",
+    },
+  ],
+  closing: "투스텝 소프트가 밟은 순서가 곧 우리가 일하는 순서입니다. 법률 검토와 약관 준비부터 해외 유료 전환까지, 처음부터 끝까지 함께합니다.",
+  film: {
+    src: "/video/story-it.mp4",
+    poster: "/video/story-it-poster.jpg",
+    captions: [
+      { text: "국내 가입자는 느는데 해외는 처음입니다" },
+      { text: "사용자가 어디서 찾는지 봅니다", owner: "plurank" },
+      { text: "약관과 개인정보 준비를 돕습니다", owner: "plurank" },
+      { text: "게시판 답변부터 실행합니다", owner: "microwave" },
+      { text: "유료 전환까지 숫자로 봅니다", owner: "plurank" },
+    ],
+    seconds: 4.8,
+    label: "가상의 소프트웨어 회사가 해외 진출을 준비하는 과정을 보여 주는 애니메이션. 아래 글과 같은 내용입니다.",
+    overlay: {
+      questions: ["어디서?", "약관은?", "전환은?"],
+      scan: { figure: 14, unit: "개국", line: "AI 답변에 매장 관리 도구를 묻고 비교합니다", engines: ["ChatGPT", "Perplexity", "네이버 AI 브리핑"], tag: "무료 진단" },
+      prep: { title: "법률 검토와 약관 준비", items: ["개인정보 처리방침(GDPR, CCPA)", "이용약관과 앱 마켓 정책", "데이터 보관 위치"], tag: "변호사 팀원이 먼저 봅니다" },
+      run: {
+        title: "레딧 소상공인 게시판부터",
+        pins: [
+          { label: "미국 레딧, 크리에이터 리뷰", lat: 39, lon: -98, on: true, dir: "up" },
+          { label: "유럽 링크드인", lat: 50, lon: 10, dir: "down" },
+          { label: "일본 X", lat: 36, lon: 139, dir: "up" },
+        ],
+      },
+      funnel: { steps: ["노출", "가입", "유료 전환", "유지"], check: "AI 답변에 등장", tag: "매달 리포트" },
+      order: ["questions", "scan", "prep", "run", "funnel"],
+      right: ["prep", "run", "funnel"],
+    },
+  },
+};
+
 /** 업종 탭 순서. 첫 탭이 처음 보이는 이야기 */
-export const STORIES: Story[] = [BEAUTY, FNB];
+export const STORIES: Story[] = [BEAUTY, MED, FNB, TOUR, IT];
 
 export const OWNERS: Record<Owner, { name: string; role: string; url: string }> = {
   plurank: { name: "Plurank 에이전트", role: "분석과 개선", url: "https://plurank.com" },
@@ -257,7 +449,7 @@ export const FAQ: { q: string; a: string }[] = [
   },
   {
     q: "어떤 업종을 맡나요?",
-    a: "업종을 가리지 않습니다. 뷰티뿐 아니라 병의원 해외 마케팅, F&B, 관광, IT 서비스까지 해외 진출과 해외 고객 유치를 돕습니다.",
+    a: "업종을 가리지 않습니다. 뷰티뿐 아니라 병의원 해외 마케팅, F&B, 관광, IT 서비스까지 해외 진출과 해외 고객 모으기를 돕습니다.",
   },
   {
     q: "어디까지 맡나요?",
