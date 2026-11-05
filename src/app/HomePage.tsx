@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { ArrowDown, ArrowUpRight, BadgeCheck, Menu, Plus, RotateCcw, X } from "lucide-react";
 import { BRAND_NAV } from "./brand";
-import { HERO, OWNERS, FLOW, MARKETS, FAQ, FACTS, STORY } from "./global";
-import type { Owner } from "./global";
+import { HERO, OWNERS, FLOW, MARKETS, FAQ, FACTS, STORIES, STORY_INDUSTRIES } from "./global";
+import type { Owner, Story } from "./global";
 import { SiteFooter } from "./components/SiteFooter";
 import { BrandLogo } from "./components/BrandMark";
 import { BrandContact } from "./components/BrandContact";
@@ -16,12 +16,11 @@ function OwnerTag({ owner }: { owner: Owner }) {
 }
 
 /** 영상 길이를 자막 수로 나눈 한 장면 길이(길이를 모르면 film.seconds) */
-function partOf(el: HTMLVideoElement) {
-  const { film } = STORY;
+function partOf(el: HTMLVideoElement, film: Story["film"]) {
   return Number.isFinite(el.duration) && el.duration > 0 ? el.duration / film.captions.length : film.seconds;
 }
 
-function StoryFilm() {
+function StoryFilm({ story }: { story: Story }) {
   const video = useRef<HTMLVideoElement>(null);
   const steps = useRef<HTMLOListElement>(null);
   const [active, setActive] = useState(0);
@@ -29,7 +28,7 @@ function StoryFilm() {
   const [still, setStill] = useState(false);
   // 카드를 누를 때마다 바꿔 위 글자 애니메이션을 처음부터 다시 그린다
   const [take, setTake] = useState(0);
-  const { film } = STORY;
+  const { film } = story;
   useEffect(() => {
     const el = video.current;
     if (!el) return;
@@ -43,7 +42,7 @@ function StoryFilm() {
     const n = film.captions.length;
     let frame = 0;
     const tick = () => {
-      const part = partOf(el);
+      const part = partOf(el, film);
       const beat = Math.min(n - 1, Math.floor(el.currentTime / part));
       setActive(beat);
       setLeaving(el.currentTime - beat * part > part - 0.35);
@@ -67,14 +66,14 @@ function StoryFilm() {
   const show = (i: number) => {
     const el = video.current;
     if (el) {
-      const part = partOf(el);
+      const part = partOf(el, film);
       el.currentTime = i * part + (still ? part / 2 : 0.05);
       if (!still) el.play().catch(() => undefined);
     }
     setActive(i);
     setLeaving(false);
     setTake((t) => t + 1);
-    trackEvent("story_film_step", { step: i + 1 });
+    trackEvent("story_film_step", { step: i + 1, story: story.id });
   };
   return (
     <figure className={`gx-film${still ? " is-still" : ""}`}>
@@ -87,11 +86,11 @@ function StoryFilm() {
           autoPlay={!still}
           preload="metadata"
           poster={film.poster}
-          aria-label="가상의 화장품 회사가 해외 진출을 준비하는 과정을 보여 주는 애니메이션. 아래 글과 같은 내용입니다."
+          aria-label={film.label}
         >
           <source src={film.src} type="video/mp4" />
         </video>
-        <StoryOverlay key={take} beat={active} leaving={!still && leaving} />
+        <StoryOverlay key={take} overlay={film.overlay} beat={active} leaving={!still && leaving} />
       </div>
       <ol ref={steps} className="gx-film-steps">
         {film.captions.map((c, i) => (
@@ -105,6 +104,43 @@ function StoryFilm() {
         ))}
       </ol>
     </figure>
+  );
+}
+
+/** 업종 탭(대표 11/5). 화살표 키로 옮기고, 고르면 그 업종 이야기와 영상으로 바뀐다 */
+function StoryTabs({ value, onChange }: { value: number; onChange: (i: number) => void }) {
+  const list = useRef<HTMLDivElement>(null);
+  const move = (i: number) => {
+    const n = (i + STORIES.length) % STORIES.length;
+    onChange(n);
+    list.current?.querySelectorAll<HTMLButtonElement>("[role=tab]")[n]?.focus();
+  };
+  return (
+    <div ref={list} className="gx-story-tabs" role="tablist" aria-label="업종별 이야기">
+      {STORIES.map((s, i) => (
+        <button
+          key={s.id}
+          type="button"
+          role="tab"
+          id={`gx-story-tab-${s.id}`}
+          aria-selected={i === value}
+          aria-controls="gx-story-panel"
+          tabIndex={i === value ? 0 : -1}
+          className={i === value ? "is-on" : undefined}
+          onClick={() => onChange(i)}
+          onKeyDown={(e) => {
+            if (e.key === "ArrowRight") move(i + 1);
+            else if (e.key === "ArrowLeft") move(i - 1);
+            else if (e.key === "Home") move(0);
+            else if (e.key === "End") move(STORIES.length - 1);
+            else return;
+            e.preventDefault();
+          }}
+        >
+          {s.tab}
+        </button>
+      ))}
+    </div>
   );
 }
 
@@ -181,6 +217,13 @@ function GxNav() {
 
 export function HomePage() {
   const [interest, setInterest] = useState({ value: "", revision: 0 });
+  const [storyTab, setStoryTab] = useState(0);
+  const story = STORIES[storyTab];
+  const pickStory = (i: number) => {
+    if (i === storyTab) return;
+    setStoryTab(i);
+    trackEvent("story_tab", { story: STORIES[i].id });
+  };
   const ask = (value: string, location: string) => {
     setInterest((previous) => ({ value, revision: previous.revision + 1 }));
     trackEvent("service_interest_select", { interest: value, location });
@@ -219,16 +262,18 @@ export function HomePage() {
 
         <section className="gx-section gx-story" id="story" aria-labelledby="gx-story-title">
           <div className="gx-wrap">
-            <h2 id="gx-story-title">{STORY.title}</h2>
+            {STORIES.length > 1 && <StoryTabs value={storyTab} onChange={pickStory} />}
+            <div id="gx-story-panel" role={STORIES.length > 1 ? "tabpanel" : undefined} aria-labelledby={STORIES.length > 1 ? `gx-story-tab-${story.id}` : undefined}>
+            <h2 id="gx-story-title">{story.title}</h2>
             <p className="gx-intro">
-              <strong>{STORY.company}</strong>
+              <strong>{story.company}</strong>
               <span className="gx-story-tag">가상의 회사</span>
-              {STORY.intro}
+              {story.intro}
             </p>
-            <StoryFilm />
+            <StoryFilm key={story.id} story={story} />
             <div className="gx-story-grid">
               <ol className="gx-story-questions" aria-hidden="true">
-                {STORY.steps.map((step, i) => (
+                {story.steps.map((step, i) => (
                   <li key={step.q}>
                     <span>{i + 1}</span>
                     {step.q}
@@ -236,7 +281,7 @@ export function HomePage() {
                 ))}
               </ol>
               <div className="gx-story-answers">
-                {STORY.steps.map((step, i) => (
+                {story.steps.map((step, i) => (
                   <article key={step.q}>
                     <h3>
                       <span>{i + 1}</span>
@@ -264,13 +309,14 @@ export function HomePage() {
                 ))}
               </div>
             </div>
-            <p className="gx-story-closing">{STORY.closing}</p>
+            <p className="gx-story-closing">{story.closing}</p>
+            </div>
             <div className="gx-industries">
               <p>
-                <strong>{STORY.industries.title}</strong> {STORY.industries.line}
+                <strong>{STORY_INDUSTRIES.title}</strong> {STORY_INDUSTRIES.line}
               </p>
               <ul>
-                {STORY.industries.items.map((item) => (
+                {STORY_INDUSTRIES.items.map((item) => (
                   <li key={item}>{item}</li>
                 ))}
               </ul>

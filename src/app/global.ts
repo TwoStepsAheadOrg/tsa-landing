@@ -16,8 +16,37 @@ export const HERO = {
 
 export type Owner = "plurank" | "microwave";
 
+/** 이야기 한 편(업종 탭 하나). 대표 11/5: 업종 탭(화장품, F&B, 생활 제품, 엔터테인먼트)마다 고민과 우리가 돕는 방식을 영상으로 */
+export type StoryStep = { q: string; beats: { owner?: Owner; text: string }[]; link?: { label: string; href: string }; proof?: string };
+export type OverlayKind = "questions" | "scan" | "prep" | "run" | "funnel" | "industries";
+export type StoryOverlayData = {
+  questions: string[];
+  scan: { figure: number; unit: string; line: string; engines: string[]; tag: string };
+  /** 법률 검토와 인증 준비(대표 11/5: 변호사 팀원이 먼저 보고, 인증과 등록은 고객 회사 이름으로, 준비를 돕는다) */
+  prep?: { title: string; items: string[]; tag: string };
+  run: { title: string; note?: string; pins: { label: string; lat: number; lon: number; on?: boolean; dir?: "up" | "down" | "left" }[] };
+  funnel: { steps: string[]; check: string; tag: string };
+  industries?: string[];
+  /** 장면 순서(영상 장면과 같은 순서). 없으면 questions, scan, run, funnel, industries */
+  order?: OverlayKind[];
+  /** 영상 속 사람이 왼쪽에 있어 글자를 오른쪽에 두는 장면 */
+  right?: OverlayKind[];
+};
+export type Story = {
+  id: string;
+  tab: string;
+  title: string;
+  company: string;
+  intro: string;
+  steps: StoryStep[];
+  closing: string;
+  film: { src: string; poster: string; captions: { text: string; owner?: Owner }[]; seconds: number; label: string; overlay: StoryOverlayData };
+};
+
 /** 첫 화면 다음 이야기. 가상의 화장품 회사가 해외 진출 앞에서 묻는 세 가지에 답하며 두 브랜드를 소개한다. (페이블 제안 11/2 23:5x를 줄여 씀) */
-export const STORY = {
+const BEAUTY: Story = {
+  id: "beauty",
+  tab: "뷰티",
   title: "해외로 나가고 싶은 화장품 회사가 있습니다.",
   company: "투스텝 코스메틱",
   intro: "국내에서는 잘 팔리지만 해외는 처음입니다. 세 가지를 모릅니다.",
@@ -33,7 +62,8 @@ export const STORY = {
     {
       q: "비용은 얼마나 들까요?",
       beats: [
-        { text: "진단은 무료입니다. 그다음엔 필요한 단계만 고릅니다." },
+        { text: "진단은 무료입니다. 미국 MoCRA 등록이나 EU CPNP 신고가 필요한지도 체크리스트로 먼저 확인합니다." },
+        { owner: "plurank", text: "필요하면 변호사 팀원이 등록과 신고 서류 준비를 돕습니다. 그다음엔 필요한 단계만 고릅니다." },
         { owner: "microwave", text: "레딧 광고만, 체험단만 따로 시작해도 됩니다. 매달 리포트를 보고 늘리거나 줄입니다." },
       ],
       link: { label: "무료 진단 받기", href: "#contact" },
@@ -46,24 +76,25 @@ export const STORY = {
       ],
       proof: "한 테크 스타트업의 레딧 광고는 3주 남짓 동안 노출 약 260만 회, 클릭 약 1만 6,400회를 냈습니다. 업종마다 결과는 다르지만, 이런 숫자를 매달 보고 다음을 정합니다.",
     },
-  ] as { q: string; beats: { owner?: Owner; text: string }[]; link?: { label: string; href: string }; proof?: string }[],
-  closing: "투스텝 코스메틱이 밟은 순서가 곧 우리가 일하는 순서입니다. 진출 전략부터 해외 판매까지, 처음부터 끝까지 함께합니다.",
+  ],
+  closing: "투스텝 코스메틱이 밟은 순서가 곧 우리가 일하는 순서입니다. 법률 검토와 인증 준비부터 해외 판매까지, 처음부터 끝까지 함께합니다.",
   /**
    * 첫 화면 바로 다음 애니메이션(페이블 콘티 11/3). 영상(fal Seedream 장면 + Seedance 5초 4컷 + 업종 세 칸)은 사람과 병만 보여 주고,
    * 글자와 숫자와 기호는 영상 위에 코드로 그린다(overlay). 영상 길이를 자막 수로 나눠 장면과 자막이 함께 바뀐다.
    * 투스텝 코스메틱은 가상의 회사라 성과 숫자를 붙이지 않는다.
    */
   film: {
-    src: "/video/story.mp4",
-    poster: "/video/story-poster.jpg",
+    src: "/video/story-beauty.mp4",
+    poster: "/video/story-beauty-poster.jpg",
     captions: [
       { text: "해외는 처음입니다" },
       { text: "어디서 묻는지부터 봅니다", owner: "plurank" },
+      { text: "등록과 신고 준비를 돕습니다", owner: "plurank" },
       { text: "필요한 단계만 실행합니다", owner: "microwave" },
       { text: "숫자로 보고 다음을 정합니다", owner: "plurank" },
-      { text: "업종이 달라도 순서는 같습니다" },
-    ] as { text: string; owner?: Owner }[],
+    ],
     seconds: 4.8,
+    label: "가상의 화장품 회사가 해외 진출을 준비하는 과정을 보여 주는 애니메이션. 아래 글과 같은 내용입니다.",
     overlay: {
       questions: ["어디서?", "비용은?", "결과는?"],
       scan: { figure: 14, unit: "개국", line: "AI 답변을 묻고 비교합니다", engines: ["ChatGPT", "Perplexity", "네이버 AI 브리핑"], tag: "무료 진단" },
@@ -76,20 +107,93 @@ export const STORY = {
           { label: "일본 X, 인스타그램", lat: 36, lon: 139 },
         ],
       },
+      prep: { title: "법률 검토와 인증 준비", items: ["미국 MoCRA 시설 등록과 제품 목록", "EU CPNP 신고와 책임자 지정", "성분 표시 검토"], tag: "변호사 팀원이 먼저 봅니다" },
       funnel: { steps: ["노출", "클릭", "가입", "결제"], check: "AI 답변에 등장", tag: "매달 리포트" },
-      industries: ["병의원", "F&B", "뷰티"],
+      order: ["questions", "scan", "prep", "run", "funnel"],
+      right: ["prep"],
     },
   },
-  /** 이야기 끝. 화장품 말고도 같은 순서로 돕는 업종(대표 11/3). 병의원은 「병의원 해외 마케팅」으로 쓴다(「해외환자 유치」는 유치업 등록 표현이라 쓰지 않음, 대표 11/3 17:22). */
-  industries: {
-    title: "화장품만이 아닙니다.",
-    line: "업종이 달라도 해외 고객을 모으는 순서는 같습니다.",
-    items: ["뷰티", "병의원 해외 마케팅", "F&B", "관광", "IT 서비스"],
+
+};
+
+/** 이야기 끝. 화장품 말고도 같은 순서로 돕는 업종(대표 11/3). 병의원은 「병의원 해외 마케팅」으로 쓴다(「해외환자 유치」는 유치업 등록 표현이라 쓰지 않음, 대표 11/3 17:22). */
+export const STORY_INDUSTRIES = {
+  title: "다른 업종도 같습니다.",
+  line: "업종이 달라도 해외 고객을 모으는 순서는 같습니다.",
+  items: ["뷰티", "병의원 해외 마케팅", "F&B", "관광", "IT 서비스"],
+};
+
+
+/** 업종 탭(대표 11/5, 페이블 콘티 industry-tabs/FABLE-STORYBOARD.md). 회사는 모두 가상이라 성과 숫자를 붙이지 않는다. 영상은 사람과 제품만, 글자는 코드로 */
+const FNB: Story = {
+  id: "fnb",
+  tab: "F&B",
+  title: "해외로 나가고 싶은 소스 회사가 있습니다.",
+  company: "투스텝 푸드",
+  intro: "국내 마트에서는 자리를 잡았는데, 미국 바이어가 시설 등록을 물었을 때 답을 못 했습니다. 세 가지를 모릅니다.",
+  steps: [
+    {
+      q: "해외에서 한국 소스를 찾는 사람은 어디서 묻나요?",
+      beats: [
+        { owner: "plurank", text: "14개국 AI 답변에 한국 소스와 간편식을 물었을 때 어떤 브랜드와 출처가 나오는지 찾습니다. 여기까지가 무료 진단입니다." },
+        { owner: "microwave", text: "그 결과로 채널을 고릅니다. 미국은 레딧 요리 게시판, 일본은 인스타그램, 한국을 찾은 외국인은 방한 체험단. 레딧 글은 소속을 밝히고 사람이 직접 답합니다." },
+      ],
+      link: { label: "시장별 채널 보기", href: "#markets" },
+    },
+    {
+      q: "미국에 보내려면 시설 등록과 표시 기준은 어떻게 준비하나요?",
+      beats: [
+        { owner: "plurank", text: "FDA 식품시설 등록, 영양성분표와 알레르기 표시 같은 미국 표시 기준을 체크리스트로 만들고 변호사 팀원이 먼저 봅니다." },
+        { owner: "plurank", text: "서류와 라벨 시안 준비를 돕습니다. 등록은 회사 이름으로 하고, 통관과 물류는 필요시 협의를 거칩니다." },
+      ],
+      link: { label: "무료 진단 받기", href: "#contact" },
+    },
+    {
+      q: "현지 매장도 없는데 어떻게 팔고, 반응은 어떻게 보나요?",
+      beats: [
+        { owner: "microwave", text: "쇼피파이 스토어를 만들고 틱톡샵에 입점해 운영합니다. 체험단 후기는 협찬 표시를 달고 올립니다." },
+        { owner: "plurank", text: "노출, 클릭, 주문, 재구매를 매달 리포트로 보고 다음 채널을 정합니다." },
+      ],
+      proof: "한 테크 스타트업의 레딧 광고는 3주 남짓 동안 노출 약 260만 회, 클릭 약 1만 6,400회를 냈습니다. 업종마다 결과는 다르지만, 이런 숫자를 매달 보고 다음을 정합니다.",
+    },
+  ],
+  closing: "투스텝 푸드가 밟은 순서가 곧 우리가 일하는 순서입니다. 법률 검토와 인증 준비부터 해외 판매까지, 처음부터 끝까지 함께합니다.",
+  film: {
+    src: "/video/story-fnb.mp4",
+    poster: "/video/story-fnb-poster.jpg",
+    captions: [
+      { text: "소스는 팔리는데 해외는 처음입니다" },
+      { text: "누가 어디서 묻는지 봅니다", owner: "plurank" },
+      { text: "등록과 표시 준비를 돕습니다", owner: "plurank" },
+      { text: "채널 하나부터 실행합니다", owner: "microwave" },
+      { text: "주문까지 숫자로 봅니다", owner: "plurank" },
+    ],
+    seconds: 4.8,
+    label: "가상의 소스 회사가 해외 진출을 준비하는 과정을 보여 주는 애니메이션. 아래 글과 같은 내용입니다.",
+    overlay: {
+      questions: ["어디서?", "등록은?", "판매는?"],
+      scan: { figure: 14, unit: "개국", line: "AI 답변에 한국 소스를 묻고 비교합니다", engines: ["ChatGPT", "Perplexity", "네이버 AI 브리핑"], tag: "무료 진단" },
+      prep: { title: "법률 검토와 인증 준비", items: ["FDA 식품시설 등록", "영양성분표와 알레르기 표시", "라벨 시안 검토"], tag: "변호사 팀원이 먼저 봅니다" },
+      run: {
+        title: "레딧 요리 게시판부터",
+        pins: [
+          { label: "미국 레딧", lat: 39, lon: -98, on: true, dir: "up" },
+          { label: "일본 인스타그램", lat: 36, lon: 139, dir: "up" },
+          { label: "방한 체험단", lat: 37.5, lon: 127, dir: "down" },
+        ],
+      },
+      funnel: { steps: ["노출", "클릭", "주문", "재구매"], check: "AI 답변에 등장", tag: "매달 리포트" },
+      order: ["questions", "scan", "prep", "run", "funnel"],
+      right: ["prep", "run", "funnel"],
+    },
   },
 };
 
+/** 업종 탭 순서. 첫 탭이 처음 보이는 이야기 */
+export const STORIES: Story[] = [BEAUTY, FNB];
+
 export const OWNERS: Record<Owner, { name: string; role: string; url: string }> = {
-  plurank: { name: "Plurank", role: "분석과 개선", url: "https://plurank.com" },
+  plurank: { name: "Plurank 에이전트", role: "분석과 개선", url: "https://plurank.com" },
   microwave: { name: "MICROWAVE", role: "선택과 실행", url: "https://microwave.ai.kr" },
 };
 
@@ -157,7 +261,7 @@ export const FAQ: { q: string; a: string }[] = [
   },
   {
     q: "어디까지 맡나요?",
-    a: "해외 마케팅과 판매 채널 운영을 함께 맡습니다. 법인 설립, 인허가, 통관, 물류, 현지 유통은 필요시 협의를 거쳐 진행합니다.",
+    a: "해외 마케팅과 판매 채널 운영을 함께 맡습니다. 진출국 인증과 등록은 변호사 팀원이 먼저 보고, 체크리스트와 서류 준비까지 돕습니다. 법인 설립, 통관, 물류, 현지 유통은 필요시 협의를 거쳐 진행합니다.",
   },
   {
     q: "왜 레딧인가요?",
