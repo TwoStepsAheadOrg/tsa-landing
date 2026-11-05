@@ -1543,3 +1543,115 @@ body:has(.gx) {
     transition: none;
   }
 }
+
+/* 업종 탭(대표 11/5): 이야기 위에서 업종을 고르면 영상과 글이 그 업종으로 바뀐다 */
+.gx-story-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 36px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.gx-story-tabs::-webkit-scrollbar {
+  display: none;
+}
+.gx-story-tabs [role="tab"] {
+  flex: none;
+  padding: 10px 18px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--paper);
+  color: var(--mute);
+  font: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+.gx-story-tabs [role="tab"]:hover {
+  color: var(--ink);
+  border-color: #c9ced8;
+}
+.gx-story-tabs [role="tab"].is-on {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: #fff;
+}
+.gx-story-tabs [role="tab"]:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 2px;
+}
+
+/* 법률 검토와 인증 준비(대표 11/5): 사람이 왼쪽에 있는 서류 장면이라 오른쪽 빈 곳에 */
+.gx-ov-prep {
+  justify-content: center;
+  left: auto;
+  width: 44%;
+  padding: 0 5% 0 0;
+}
+.gx-ov-prep .gx-ov-title {
+  display: flex;
+  align-items: center;
+  gap: 0.35em;
+  font-size: clamp(16px, 3.2cqw, 40px);
+}
+.gx-ov-prep .gx-ov-title svg {
+  width: 0.9em;
+  height: 0.9em;
+  color: var(--plurank);
+  flex: none;
+}
+.gx-ov-prep-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.6cqw;
+  counter-reset: prep;
+}
+.gx-ov-prep-list li {
+  counter-increment: prep;
+  display: flex;
+  align-items: center;
+  gap: 0.6em;
+  padding: 0.45em 0.9em 0.45em 0.5em;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: 0 1px 8px rgba(13, 15, 20, 0.08);
+  font-weight: 700;
+}
+.gx-ov-prep-list li::before {
+  content: counter(prep);
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.6em;
+  height: 1.6em;
+  border-radius: 50%;
+  background: var(--ink);
+  color: #fff;
+  font-size: 0.8em;
+}
+.gx-ov-prep.is-on .gx-ov-prep-list li:nth-child(2) {
+  animation-delay: 0.3s;
+}
+.gx-ov-prep.is-on .gx-ov-prep-list li:nth-child(3) {
+  animation-delay: 0.6s;
+}
+/* 손이 왼쪽에 나오는 실행 장면은 지도를 오른쪽 위에 */
+.gx-ov-3.is-right {
+  align-items: flex-end;
+  text-align: right;
+}
+/* 사람이 왼쪽에 앉은 마지막 장면은 숫자 칸을 오른쪽에 */
+.gx-ov-4.is-right {
+  left: auto;
+  right: 0;
+  padding: 7% 5% 0 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  .gx-story-tabs [role="tab"] {
+    transition: none;
+  }
+}
