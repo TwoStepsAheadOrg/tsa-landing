@@ -26,6 +26,90 @@ const INTEREST_LABEL: Record<string, string> = {
   other: '기타',
 };
 
+/**
+ * ChatGPT 광고 전환 API(서버 이벤트). https://developers.openai.com/ads/conversions-api
+ * 브라우저 픽셀과 같은 event_id로 보내 오픈에이아이가 하나로 셉니다.
+ * OPENAI_ADS_CAPI_KEY(운영 환경 변수, 광고 관리자 전환 탭에서 발급)가 없으면 보내지 않습니다.
+ * 문의 폼에 동의 문구가 없어 이메일 해시는 보내지 않습니다(IP, 브라우저 정보, obref, oppref만).
+ */
+const OAI_EVENTS_URL = 'https://bzr.openai.com/v1/events';
+const OAI_DEFAULT_PIXEL_ID = 'BMU1Eiybza32Ah9GTVBq4Z';
+const OAI_TOKEN_RE = /^[\x21-\x7e]{1,512}$/;
+const OAI_ID_RE = /^[A-Za-z0-9_-]{8,64}$/;
+const OAI_SITE_HOSTS = new Set(['twostepsahead.co.kr']);
+const OAI_TIMEOUT_MS = 3000;
+
+function clientIp(req: Request): string | undefined {
+  const raw =
+    req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
+    req.headers.get('x-real-ip')?.trim() ||
+    '';
+  if (/^\d{1,3}(\.\d{1,3}){3}$/.test(raw)) return raw;
+  if (raw.includes(':') && /^[0-9a-fA-F:.]{2,45}$/.test(raw)) return raw;
+  return undefined;
+}
+
+/** 클라이언트가 보낸 _oai 값으로 전환 API 이벤트 하나를 만든다. event_id가 없으면 보내지 않는다(중복 집계 방지). */
+function openAiConversionEvent(raw: unknown, req: Request, now: number) {
+  if (!raw || typeof raw !== 'object' || Array.isArray(raw)) return null;
+  const c = raw as Record<string, unknown>;
+  const id = typeof c.event_id === 'string' ? c.event_id : '';
+  if (!OAI_ID_RE.test(id)) return null;
+
+  let sourceUrl = 'https://twostepsahead.co.kr/';
+  if (typeof c.source_url === 'string') {
+    try {
+      const u = new URL(c.source_url);
+      if (u.protocol === 'https:' && OAI_SITE_HOSTS.has(u.hostname)) sourceUrl = u.origin + u.pathname;
+    } catch {
+      // 잘못된 주소는 기본 주소로
+    }
+  }
+
+  const user: Record<string, string> = {};
+  const ip = clientIp(req);
+  if (ip) user.ip_address = ip;
+  const ua = req.headers.get('user-agent')?.trim();
+  if (ua) user.user_agent = ua.slice(0, 1024);
+  if (typeof c.obref === 'string' && OAI_TOKEN_RE.test(c.obref)) user.obref = c.obref;
+
+  const event: Record<string, unknown> =
+    c.kind === 'diagnosis'
+      ? { id, type: 'lead_created', data: { type: 'customer_action' } }
+      : { id, type: 'custom', custom_event_name: 'contact_form_submit', data: { type: 'custom' } };
+  event.timestamp_ms = now;
+  event.action_source = 'web';
+  event.source_url = sourceUrl;
+  if (typeof c.oppref === 'string' && OAI_TOKEN_RE.test(c.oppref)) event.oppref = c.oppref;
+  if (Object.keys(user).length) event.user = user;
+  return event;
+}
+
+/** 실패해도 문의 응답에는 영향을 주지 않는다. 키는 기록하지 않는다. */
+async function sendOpenAiConversion(event: Record<string, unknown>, env: Record<string, string | undefined>) {
+  const key = env.OPENAI_ADS_CAPI_KEY?.trim();
+  if (!key) return;
+  const pixelId = env.OPENAI_ADS_PIXEL_ID?.trim() || OAI_DEFAULT_PIXEL_ID;
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), OAI_TIMEOUT_MS);
+  try {
+    const r = await fetch(`${OAI_EVENTS_URL}?pid=${encodeURIComponent(pixelId)}`, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json', authorization: `Bearer ${key}` },
+      body: JSON.stringify({ integration_source: 'tsa-landing', events: [event] }),
+      signal: controller.signal,
+    });
+    if (!r.ok) {
+      const txt = await r.text().catch(() => '');
+      console.error('openai conversion failed', r.status, txt.slice(0, 300));
+    }
+  } catch (e) {
+    console.error('openai conversion error', e instanceof Error ? e.name : 'unknown');
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
 function jsonResponse(body: unknown, status = 200) {
   return new Response(JSON.stringify(body), {
     status,
@@ -104,8 +188,8 @@ export default async function handler(req: Request): Promise<Response> {
   const email = escapeMrkdwn(rawEmail);
   const interest = INTEREST_LABEL[interestKey] ?? escapeMrkdwn(interestKey);
 
-  const webhookUrl = (globalThis as { process?: { env?: Record<string, string | undefined> } })
-    .process?.env?.SLACK_WEBHOOK_URL;
+  const env = (globalThis as { process?: { env?: Record<string, string | undefined> } }).process?.env ?? {};
+  const webhookUrl = env.SLACK_WEBHOOK_URL;
   if (!webhookUrl) {
     console.error('SLACK_WEBHOOK_URL not configured');
     return jsonResponse({ error: 'webhook_not_configured' }, 500);
@@ -166,5 +250,10 @@ export default async function handler(req: Request): Promise<Response> {
   }
 
   void ua; // reserved for future logging
+
+  // 접수된 문의만 ChatGPT 광고 전환 API로 보낸다(실패해도 문의는 성공).
+  const conversion = openAiConversionEvent(body._oai, req, Date.now());
+  if (conversion) await sendOpenAiConversion(conversion, env);
+
   return jsonResponse({ ok: true });
 }

@@ -11,7 +11,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import { trackEvent, trackAdsConversion } from "../lib/gtag";
-import { trackOpenAiContact } from "../lib/oaiq";
+import { prepareInquiryConversion, trackOpenAiConversion } from "../lib/oaiq";
 
 const EMAIL = "glenn.kim@twostepsahead.co.kr";
 const EXAMPLES = [
@@ -133,6 +133,7 @@ function CreatorContact() {
     setStatus("sending");
     setError("");
     trackEvent("inquiry_submit", { interest: "creator", location: "ownnext" });
+    const conversion = prepareInquiryConversion(true);
     try {
       const response = await fetch("/api/inquiry", {
         method: "POST",
@@ -144,6 +145,7 @@ function CreatorContact() {
           interest: "creator",
           message: `관심 분야: ${form.topic}\n\n${form.message}`,
           _hp: form._hp,
+          _oai: conversion,
         }),
       });
       const result = await response.json().catch(() => null);
@@ -152,7 +154,7 @@ function CreatorContact() {
       setStatus("success");
       trackEvent("generate_lead", { interest: "creator", location: "ownnext" });
       trackAdsConversion("lead");
-      trackOpenAiContact();
+      trackOpenAiConversion(conversion);
     } catch {
       setStatus("error");
       setError(
