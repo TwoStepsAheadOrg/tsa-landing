@@ -44,17 +44,37 @@ function acceptsBlockKit(payload) {
   });
 }
 
-function harness({ configured = true, upstream = 'ok' } = {}) {
+const FAKE_CAPI_KEY = 'test-only-capi-key';
+const CAPI_URL = 'https://bzr.openai.com/v1/events?pid=BMU1Eiybza32Ah9GTVBq4Z';
+
+function harness({ configured = true, upstream = 'ok', capiKey, capi = 'ok' } = {}) {
   const calls = [];
+  const capiCalls = [];
   const errors = [];
   const module = { exports: {} };
+  const env = configured ? { SLACK_WEBHOOK_URL: FAKE_WEBHOOK } : {};
+  if (capiKey) env.OPENAI_ADS_CAPI_KEY = capiKey;
   // The VM receives a fake environment and only this mock fetch. It cannot read
   // the host webhook or call host fetch; there is no require in the VM either.
+  // Timer, abort and URL globals are passed so the conversion path cannot fail
+  // with a ReferenceError that a catch block would hide.
   const context = {
-    module, exports: module.exports, Request, Response, Headers,
-    process: { env: configured ? { SLACK_WEBHOOK_URL: FAKE_WEBHOOK } : {} },
+    module, exports: module.exports, Request, Response, Headers, URL,
+    AbortController, setTimeout, clearTimeout,
+    process: { env },
     console: { error: (...args) => errors.push(args) },
     fetch: async (url, init) => {
+      if (String(url).startsWith('https://bzr.openai.com/')) {
+        capiCalls.push({ url: String(url), headers: init.headers, payload: JSON.parse(init.body) });
+        if (capi === 'throw') throw new Error('synthetic capi failure');
+        if (capi === 'reject') return new Response('{"error":"synthetic"}', { status: 400 });
+        if (capi === 'hang') {
+          return new Promise((_resolve, reject) => {
+            init.signal.addEventListener('abort', () => reject(new DOMException('aborted', 'AbortError')));
+          });
+        }
+        return new Response('{}', { status: 202 });
+      }
       assert.equal(url, FAKE_WEBHOOK, 'only a test webhook may be requested');
       assert.equal(init.method, 'POST');
       assert.equal(init.headers['content-type'], 'application/json');
@@ -67,7 +87,7 @@ function harness({ configured = true, upstream = 'ok' } = {}) {
     },
   };
   runInNewContext(compiled, context, { filename: 'inquiry.test-isolated.cjs' });
-  return { handler: module.exports.default, calls, errors };
+  return { handler: module.exports.default, calls, capiCalls, errors };
 }
 
 async function assertResponse(response, status, body) {
@@ -210,4 +230,102 @@ test('oversized input is clipped to the existing server limit and still delivere
   assert.equal(h.calls.length, 1);
   assert.ok(acceptsBlockKit(h.calls[0]));
   assert.equal(messageText(h.calls[0]), '&amp;'.repeat(4000) + '…');
+});
+
+// ChatGPT 광고 전환 API(서버 이벤트)
+const oai = { event_id: '3f0c9f5e-1b2a-4c3d-9e8f-0a1b2c3d4e5f', kind: 'diagnosis', source_url: 'https://twostepsahead.co.kr/', oppref: 'gAAAAAtest_oppref', obref: 'obref-test-1' };
+function requestWith(extra, headers = {}) {
+  return new Request('https://website.invalid/api/inquiry', {
+    method: 'POST',
+    headers: { 'content-type': 'application/json', 'user-agent': 'TestAgent/1.0', 'x-forwarded-for': '203.0.113.7, 10.0.0.1', ...headers },
+    body: JSON.stringify({ ...valid, ...extra }),
+  });
+}
+
+test('without a conversion key, an accepted inquiry sends no server conversion', async () => {
+  const h = harness();
+  await assertResponse(await h.handler(requestWith({ _oai: oai })), 200, { ok: true });
+  assert.equal(h.calls.length, 1);
+  assert.equal(h.capiCalls.length, 0);
+});
+
+test('a diagnosis inquiry sends exactly one lead_created with the browser event id', async () => {
+  const h = harness({ capiKey: FAKE_CAPI_KEY });
+  await assertResponse(await h.handler(requestWith({ _oai: oai })), 200, { ok: true });
+  assert.equal(h.capiCalls.length, 1);
+  const call = h.capiCalls[0];
+  assert.equal(call.url, CAPI_URL);
+  assert.equal(call.headers.authorization, `Bearer ${FAKE_CAPI_KEY}`);
+  assert.equal(call.payload.integration_source, 'tsa-landing');
+  assert.equal(call.payload.events.length, 1);
+  const e = call.payload.events[0];
+  assert.equal(e.id, oai.event_id);
+  assert.equal(e.type, 'lead_created');
+  assert.deepEqual(e.data, { type: 'customer_action' });
+  assert.equal(e.action_source, 'web');
+  assert.equal(e.source_url, 'https://twostepsahead.co.kr/');
+  assert.equal(e.oppref, oai.oppref);
+  assert.deepEqual(e.user, { ip_address: '203.0.113.7', user_agent: 'TestAgent/1.0', obref: oai.obref });
+  assert.ok(Number.isInteger(e.timestamp_ms) && Math.abs(Date.now() - e.timestamp_ms) < 60_000);
+  assert.ok(!JSON.stringify(call.payload).includes(valid.email), 'email must not be sent');
+  assert.ok(!JSON.stringify(h.errors).includes(FAKE_CAPI_KEY), 'key must not be logged');
+});
+
+test('a contact inquiry sends the custom contact_form_submit event', async () => {
+  const h = harness({ capiKey: FAKE_CAPI_KEY });
+  await assertResponse(await h.handler(requestWith({ _oai: { ...oai, kind: 'contact', oppref: undefined, obref: undefined } })), 200, { ok: true });
+  const e = h.capiCalls[0].payload.events[0];
+  assert.equal(e.type, 'custom');
+  assert.equal(e.custom_event_name, 'contact_form_submit');
+  assert.deepEqual(e.data, { type: 'custom' });
+  assert.equal('oppref' in e, false);
+  assert.equal('obref' in e.user, false);
+});
+
+test('no event id (old cached page) means no server conversion, to avoid double counting', async () => {
+  const h = harness({ capiKey: FAKE_CAPI_KEY });
+  await assertResponse(await h.handler(requestWith({})), 200, { ok: true });
+  await assertResponse(await h.handler(requestWith({ _oai: { ...oai, event_id: 'x' } })), 200, { ok: true });
+  assert.equal(h.calls.length, 2);
+  assert.equal(h.capiCalls.length, 0);
+});
+
+test('a failed Slack delivery sends no server conversion', async () => {
+  const h = harness({ capiKey: FAKE_CAPI_KEY, upstream: 'reject' });
+  await assertResponse(await h.handler(requestWith({ _oai: oai })), 502, { error: 'slack_failed' });
+  assert.equal(h.capiCalls.length, 0);
+});
+
+test('honeypot submissions send no server conversion', async () => {
+  const h = harness({ capiKey: FAKE_CAPI_KEY });
+  await assertResponse(await h.handler(requestWith({ _hp: 'bot', _oai: oai })), 200, { ok: true });
+  assert.equal(h.capiCalls.length, 0);
+});
+
+for (const mode of ['reject', 'throw', 'hang']) {
+  test(`a ${mode} conversion call still returns the inquiry success`, async () => {
+    const h = harness({ capiKey: FAKE_CAPI_KEY, capi: mode });
+    await assertResponse(await h.handler(requestWith({ _oai: oai })), 200, { ok: true });
+    assert.equal(h.capiCalls.length, 1);
+    assert.equal(h.errors.length, 1);
+    assert.ok(!JSON.stringify(h.errors).includes(FAKE_CAPI_KEY));
+  });
+}
+
+test('untrusted attribution values are dropped or normalised', async () => {
+  const h = harness({ capiKey: FAKE_CAPI_KEY });
+  await h.handler(requestWith(
+    { _oai: { ...oai, source_url: 'https://evil.example/landing?x=1', oppref: 'has space', obref: 'x'.repeat(600) } },
+    { 'x-forwarded-for': 'not-an-ip' },
+  ));
+  const e = h.capiCalls[0].payload.events[0];
+  assert.equal(e.source_url, 'https://twostepsahead.co.kr/');
+  assert.equal('oppref' in e, false);
+  assert.deepEqual(e.user, { user_agent: 'TestAgent/1.0' });
+});
+
+test('the source page path is kept without its query string', async () => {
+  const h = harness({ capiKey: FAKE_CAPI_KEY });
+  await h.handler(requestWith({ _oai: { ...oai, source_url: 'https://twostepsahead.co.kr/ownnext/?oppref=abc' } }));
+  assert.equal(h.capiCalls[0].payload.events[0].source_url, 'https://twostepsahead.co.kr/ownnext/');
 });

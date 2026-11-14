@@ -3,7 +3,7 @@ import type { FormEvent } from "react";
 import { Check, ChevronDown, Send } from "lucide-react";
 import { BRAND, INTEREST_OPTIONS } from "../brand";
 import { trackAdsConversion, trackEvent } from "@/lib/gtag";
-import { trackOpenAiInquiry } from "@/lib/oaiq";
+import { prepareInquiryConversion, trackOpenAiConversion } from "@/lib/oaiq";
 const initial = {
   name: "",
   company: "",
@@ -44,18 +44,19 @@ export function BrandContact({
     setStatus("sending");
     setError("");
     trackEvent("inquiry_submit", { interest: form.interest });
+    const conversion = prepareInquiryConversion();
     try {
       const response = await fetch("/api/inquiry", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify(form),
+        body: JSON.stringify({ ...form, _oai: conversion }),
       });
       const result = await response.json().catch(() => null);
       if (!response.ok || result?.ok !== true)
         throw new Error("inquiry_failed");
       trackEvent("generate_lead", { interest: form.interest });
       trackAdsConversion("lead");
-      trackOpenAiInquiry();
+      trackOpenAiConversion(conversion);
       setStatus("success");
     } catch {
       setStatus("error");
