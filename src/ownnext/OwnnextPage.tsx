@@ -11,7 +11,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import { trackEvent, trackAdsConversion } from "../lib/gtag";
-import { trackOpenAiLead } from "../lib/oaiq";
+import { trackOpenAiContact } from "../lib/oaiq";
 
 const EMAIL = "glenn.kim@twostepsahead.co.kr";
 const EXAMPLES = [
@@ -152,7 +152,7 @@ function CreatorContact() {
       setStatus("success");
       trackEvent("generate_lead", { interest: "creator", location: "ownnext" });
       trackAdsConversion("lead");
-      trackOpenAiLead();
+      trackOpenAiContact();
     } catch {
       setStatus("error");
       setError(

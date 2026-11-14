@@ -3,7 +3,7 @@ import type { FormEvent } from "react";
 import { Check, ChevronDown, Send } from "lucide-react";
 import { BRAND, INTEREST_OPTIONS } from "../brand";
 import { trackAdsConversion, trackEvent } from "@/lib/gtag";
-import { trackOpenAiLead } from "@/lib/oaiq";
+import { trackOpenAiInquiry } from "@/lib/oaiq";
 const initial = {
   name: "",
   company: "",
@@ -55,7 +55,7 @@ export function BrandContact({
         throw new Error("inquiry_failed");
       trackEvent("generate_lead", { interest: form.interest });
       trackAdsConversion("lead");
-      trackOpenAiLead();
+      trackOpenAiInquiry();
       setStatus("success");
     } catch {
       setStatus("error");

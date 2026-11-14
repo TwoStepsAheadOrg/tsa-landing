@@ -10,6 +10,8 @@ import { PartnerMarquee } from "./components/PartnerMarquee";
 import { HeroGlobe } from "./components/HeroGlobe";
 import { StoryOverlay } from "./components/StoryOverlay";
 import { trackEvent } from "@/lib/gtag";
+import { isSectionSent, setInquiryIntentFromLink, trackOpenAiSection } from "@/lib/oaiq";
+import type { SectionKey } from "@/lib/oaiq";
 
 function OwnerTag({ owner }: { owner: Owner }) {
   return <span className={`gx-owner is-${owner}`}>{OWNERS[owner].name}</span>;
@@ -228,6 +230,40 @@ export function HomePage() {
     setInterest((previous) => ({ value, revision: previous.revision + 1 }));
     trackEvent("service_interest_select", { interest: value, location });
   };
+  // ChatGPT 광고 전환: 문의 폼으로 오게 한 링크가 「무료 진단 받기」인지 「문의하기」인지 기억한다
+  useEffect(() => {
+    const remember = (event: MouseEvent) => {
+      const link = (event.target as Element | null)?.closest?.('a[href="#contact"]');
+      if (link) setInquiryIntentFromLink(link.textContent ?? "");
+    };
+    document.addEventListener("click", remember, true);
+    return () => document.removeEventListener("click", remember, true);
+  }, []);
+  // ChatGPT 광고 전환: 서비스 소개(#story), 시장(#markets), 실제 사례 블록이
+  // 화면 가운데까지 올라오면 페이지마다 한 번씩 보낸다(긴 섹션도 같은 기준)
+  useEffect(() => {
+    const targets: [SectionKey, Element | null][] = [
+      ["story", document.getElementById("story")],
+      ["markets", document.getElementById("markets")],
+      ["cases", document.querySelector("#story .gx-story-proof")],
+    ];
+    const keyOf = new Map<Element, SectionKey>();
+    for (const [key, el] of targets) if (el && !isSectionSent(key)) keyOf.set(el, key);
+    if (!keyOf.size || typeof IntersectionObserver === "undefined") return;
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          const key = keyOf.get(entry.target);
+          if (!key || !entry.isIntersecting) continue;
+          trackOpenAiSection(key);
+          io.unobserve(entry.target);
+        }
+      },
+      { rootMargin: "0px 0px -50% 0px", threshold: 0 },
+    );
+    keyOf.forEach((_key, el) => io.observe(el));
+    return () => io.disconnect();
+  }, [storyTab]);
 
   return (
     <div className="gx" id="top">
