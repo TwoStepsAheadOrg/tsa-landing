@@ -2,6 +2,22 @@ import { defineConfig } from 'vite'
 import path from 'path'
 import tailwindcss from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react'
+import { readFileSync, writeFileSync, existsSync } from 'fs'
+
+// 배포할 때마다 dist/sitemap.xml 의 lastmod 를 빌드 날짜(한국 시간)로 바꾼다(빙, 구글이 바뀐 날을 알 수 있게)
+function sitemapLastmod() {
+  return {
+    name: 'sitemap-lastmod',
+    apply: 'build' as const,
+    closeBundle() {
+      const file = path.resolve(__dirname, 'dist/sitemap.xml')
+      if (!existsSync(file)) return
+      const today = new Date(Date.now() + 9 * 3600 * 1000).toISOString().slice(0, 10)
+      const xml = readFileSync(file, 'utf8').replace(/<lastmod>[^<]*<\/lastmod>/g, `<lastmod>${today}</lastmod>`)
+      writeFileSync(file, xml)
+    },
+  }
+}
 
 export default defineConfig({
   plugins: [
@@ -9,6 +25,7 @@ export default defineConfig({
     // Tailwind is not being actively used – do not remove them
     react(),
     tailwindcss(),
+    sitemapLastmod(),
   ],
   resolve: {
     alias: {
