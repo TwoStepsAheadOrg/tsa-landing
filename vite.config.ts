@@ -23,6 +23,10 @@ export default defineConfig({
         careers: path.resolve(__dirname, 'careers/index.html'),
         ownnext: path.resolve(__dirname, 'ownnext/index.html'),
       },
+      output: {
+        // 공유 묶음 파일 이름에 gtag, oaiq 같은 추적 도구 이름이 붙으면 광고 차단기가 사이트 전체 코드를 막을 수 있어 중립 이름으로
+        chunkFileNames: 'assets/chunk-[hash].js',
+      },
     },
   },
   server: {
