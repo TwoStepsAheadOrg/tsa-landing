@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
+import { createHash } from 'node:crypto';
 import { runInNewContext } from 'node:vm';
 import test from 'node:test';
 
@@ -60,7 +61,7 @@ function harness({ configured = true, upstream = 'ok', capiKey, capi = 'ok' } = 
   // with a ReferenceError that a catch block would hide.
   const context = {
     module, exports: module.exports, Request, Response, Headers, URL,
-    AbortController, setTimeout, clearTimeout,
+    AbortController, setTimeout, clearTimeout, crypto: globalThis.crypto, TextEncoder,
     process: { env },
     console: { error: (...args) => errors.push(args) },
     fetch: async (url, init) => {
@@ -233,7 +234,10 @@ test('oversized input is clipped to the existing server limit and still delivere
 });
 
 // ChatGPT 광고 전환 API(서버 이벤트)
-const oai = { event_id: '3f0c9f5e-1b2a-4c3d-9e8f-0a1b2c3d4e5f', kind: 'diagnosis', source_url: 'https://twostepsahead.co.kr/', oppref: 'gAAAAAtest_oppref', obref: 'obref-test-1' };
+const VISITOR_SHA256 = createHash('sha256').update('test-visitor-id').digest('hex');
+// 문서 규칙: 앞뒤 공백 제거, 소문자, UTF-8, SHA-256 소문자 16진수 64자
+const EMAIL_SHA256 = createHash('sha256').update(valid.email.trim().toLowerCase(), 'utf8').digest('hex');
+const oai = { event_id: '3f0c9f5e-1b2a-4c3d-9e8f-0a1b2c3d4e5f', kind: 'diagnosis', source_url: 'https://twostepsahead.co.kr/', oppref: 'gAAAAAtest_oppref', obref: 'obref-test-1', external_id_sha256: VISITOR_SHA256 };
 function requestWith(extra, headers = {}) {
   return new Request('https://website.invalid/api/inquiry', {
     method: 'POST',
@@ -265,7 +269,10 @@ test('a diagnosis inquiry sends exactly one lead_created with the browser event 
   assert.equal(e.action_source, 'web');
   assert.equal(e.source_url, 'https://twostepsahead.co.kr/');
   assert.equal(e.oppref, oai.oppref);
-  assert.deepEqual(e.user, { ip_address: '203.0.113.7', user_agent: 'TestAgent/1.0', obref: oai.obref });
+  assert.deepEqual(e.user, {
+    emails_sha256: [EMAIL_SHA256], external_ids_sha256: [oai.external_id_sha256],
+    ip_address: '203.0.113.7', user_agent: 'TestAgent/1.0', obref: oai.obref,
+  });
   assert.ok(Number.isInteger(e.timestamp_ms) && Math.abs(Date.now() - e.timestamp_ms) < 60_000);
   assert.ok(!JSON.stringify(call.payload).includes(valid.email), 'email must not be sent');
   assert.ok(!JSON.stringify(h.errors).includes(FAKE_CAPI_KEY), 'key must not be logged');
@@ -315,17 +322,35 @@ for (const mode of ['reject', 'throw', 'hang']) {
 test('untrusted attribution values are dropped or normalised', async () => {
   const h = harness({ capiKey: FAKE_CAPI_KEY });
   await h.handler(requestWith(
-    { _oai: { ...oai, source_url: 'https://evil.example/landing?x=1', oppref: 'has space', obref: 'x'.repeat(600) } },
+    { _oai: { ...oai, source_url: 'https://evil.example/landing?x=1', oppref: 'has space', obref: 'x'.repeat(600), external_id_sha256: 'raw-visitor-id' } },
     { 'x-forwarded-for': 'not-an-ip' },
   ));
   const e = h.capiCalls[0].payload.events[0];
   assert.equal(e.source_url, 'https://twostepsahead.co.kr/');
   assert.equal('oppref' in e, false);
-  assert.deepEqual(e.user, { user_agent: 'TestAgent/1.0' });
+  assert.deepEqual(e.user, { emails_sha256: [EMAIL_SHA256], user_agent: 'TestAgent/1.0' });
 });
 
 test('the source page path is kept without its query string', async () => {
   const h = harness({ capiKey: FAKE_CAPI_KEY });
   await h.handler(requestWith({ _oai: { ...oai, source_url: 'https://twostepsahead.co.kr/ownnext/?oppref=abc' } }));
   assert.equal(h.capiCalls[0].payload.events[0].source_url, 'https://twostepsahead.co.kr/ownnext/');
+});
+
+test('the email hash follows the trim and lowercase rule, and the raw email never leaves', async () => {
+  const h = harness({ capiKey: FAKE_CAPI_KEY });
+  await h.handler(requestWith({ email: '  Tester@Example.INVALID ', _oai: oai }));
+  const sent = JSON.stringify(h.capiCalls[0].payload);
+  assert.deepEqual(h.capiCalls[0].payload.events[0].user.emails_sha256, [EMAIL_SHA256]);
+  assert.match(EMAIL_SHA256, /^[0-9a-f]{64}$/);
+  assert.equal(sent.toLowerCase().includes('example.invalid'), false);
+});
+
+test('an old cached page without a visitor id still sends the email hash only', async () => {
+  const h = harness({ capiKey: FAKE_CAPI_KEY });
+  const { external_id_sha256, ...withoutVisitor } = oai;
+  await h.handler(requestWith({ _oai: withoutVisitor }));
+  const user = h.capiCalls[0].payload.events[0].user;
+  assert.equal('external_ids_sha256' in user, false);
+  assert.deepEqual(user.emails_sha256, [EMAIL_SHA256]);
 });

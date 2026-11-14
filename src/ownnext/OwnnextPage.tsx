@@ -11,7 +11,11 @@ import {
   Sparkles,
 } from "lucide-react";
 import { trackEvent, trackAdsConversion } from "../lib/gtag";
-import { prepareInquiryConversion, trackOpenAiConversion } from "../lib/oaiq";
+import {
+  hashInquiryEmail,
+  prepareInquiryConversion,
+  trackOpenAiConversion,
+} from "../lib/oaiq";
 
 const EMAIL = "glenn.kim@twostepsahead.co.kr";
 const EXAMPLES = [
@@ -134,6 +138,7 @@ function CreatorContact() {
     setError("");
     trackEvent("inquiry_submit", { interest: "creator", location: "ownnext" });
     const conversion = prepareInquiryConversion(true);
+    const emailHash = hashInquiryEmail(form.email);
     try {
       const response = await fetch("/api/inquiry", {
         method: "POST",
@@ -154,7 +159,7 @@ function CreatorContact() {
       setStatus("success");
       trackEvent("generate_lead", { interest: "creator", location: "ownnext" });
       trackAdsConversion("lead");
-      trackOpenAiConversion(conversion);
+      trackOpenAiConversion(conversion, await emailHash);
     } catch {
       setStatus("error");
       setError(
@@ -292,7 +297,8 @@ function CreatorContact() {
               <p className="on-privacy">
                 주식회사 투스텝스어헤드가 상담 접수와 회신을 위해 입력한 정보를
                 확인합니다. 민감한 개인정보나 비공개 고객 정보는 적지 않아도
-                됩니다.
+                됩니다. 광고 효과를 재기 위해 이메일은 알아볼 수 없는 값(해시)으로
+                바꿔 오픈에이아이(ChatGPT 광고)에 전달합니다.
               </p>
               {status === "error" && (
                 <p className="on-error" role="alert">

@@ -3,7 +3,11 @@ import type { FormEvent } from "react";
 import { Check, ChevronDown, Send } from "lucide-react";
 import { BRAND, INTEREST_OPTIONS } from "../brand";
 import { trackAdsConversion, trackEvent } from "@/lib/gtag";
-import { prepareInquiryConversion, trackOpenAiConversion } from "@/lib/oaiq";
+import {
+  hashInquiryEmail,
+  prepareInquiryConversion,
+  trackOpenAiConversion,
+} from "@/lib/oaiq";
 const initial = {
   name: "",
   company: "",
@@ -45,6 +49,7 @@ export function BrandContact({
     setError("");
     trackEvent("inquiry_submit", { interest: form.interest });
     const conversion = prepareInquiryConversion();
+    const emailHash = hashInquiryEmail(form.email);
     try {
       const response = await fetch("/api/inquiry", {
         method: "POST",
@@ -56,7 +61,7 @@ export function BrandContact({
         throw new Error("inquiry_failed");
       trackEvent("generate_lead", { interest: form.interest });
       trackAdsConversion("lead");
-      trackOpenAiConversion(conversion);
+      trackOpenAiConversion(conversion, await emailHash);
       setStatus("success");
     } catch {
       setStatus("error");
@@ -187,6 +192,11 @@ export function BrandContact({
                   />
                 </label>
               </div>
+              <p className="form-privacy">
+                남겨주신 정보는 상담 회신에만 씁니다. 광고 효과를 재기 위해
+                이메일은 알아볼 수 없는 값(해시)으로 바꿔 오픈에이아이(ChatGPT
+                광고)에 전달합니다.
+              </p>
               {status === "error" && (
                 <p className="form-error" role="alert">
                   {error} <a href={`mailto:${BRAND.email}`}>이메일 문의</a>

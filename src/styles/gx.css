@@ -1381,6 +1381,9 @@ body:has(.gx) {
 .gx .form-error {
   color: #c2361b;
 }
+.gx .form-privacy {
+  color: var(--mute);
+}
 .gx .contact-success svg {
   color: var(--blue);
 }

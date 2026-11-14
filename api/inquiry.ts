@@ -30,7 +30,9 @@ const INTEREST_LABEL: Record<string, string> = {
  * ChatGPT 광고 전환 API(서버 이벤트). https://developers.openai.com/ads/conversions-api
  * 브라우저 픽셀과 같은 event_id로 보내 오픈에이아이가 하나로 셉니다.
  * OPENAI_ADS_CAPI_KEY(운영 환경 변수, 광고 관리자 전환 탭에서 발급)가 없으면 보내지 않습니다.
- * 문의 폼에 동의 문구가 없어 이메일 해시는 보내지 않습니다(IP, 브라우저 정보, obref, oppref만).
+ * 사용자 데이터: IP, 브라우저 정보, obref, oppref에 더해
+ *   emails_sha256 = 접수된 이메일을 앞뒤 공백 제거와 소문자로 바꾼 뒤 SHA-256(원문 전송 0, 폼에 안내 문구 있음)
+ *   external_ids_sha256 = 브라우저 픽셀과 같은 방문자 ID 해시(무작위 값, 64자 16진수만 받음)
  */
 const OAI_EVENTS_URL = 'https://bzr.openai.com/v1/events';
 const OAI_DEFAULT_PIXEL_ID = 'BMU1Eiybza32Ah9GTVBq4Z';
@@ -38,6 +40,16 @@ const OAI_TOKEN_RE = /^[\x21-\x7e]{1,512}$/;
 const OAI_ID_RE = /^[A-Za-z0-9_-]{8,64}$/;
 const OAI_SITE_HOSTS = new Set(['twostepsahead.co.kr']);
 const OAI_TIMEOUT_MS = 3000;
+const OAI_HASH_RE = /^[0-9a-f]{64}$/;
+
+async function sha256Hex(text: string): Promise<string | undefined> {
+  try {
+    const digest = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text));
+    return Array.from(new Uint8Array(digest), (b) => b.toString(16).padStart(2, '0')).join('');
+  } catch {
+    return undefined;
+  }
+}
 
 function clientIp(req: Request): string | undefined {
   const raw =
@@ -50,7 +62,7 @@ function clientIp(req: Request): string | undefined {
 }
 
 /** 클라이언트가 보낸 _oai 값으로 전환 API 이벤트 하나를 만든다. event_id가 없으면 보내지 않는다(중복 집계 방지). */
-function openAiConversionEvent(raw: unknown, req: Request, now: number) {
+function openAiConversionEvent(raw: unknown, req: Request, now: number, emailSha256?: string) {
   if (!raw || typeof raw !== 'object' || Array.isArray(raw)) return null;
   const c = raw as Record<string, unknown>;
   const id = typeof c.event_id === 'string' ? c.event_id : '';
@@ -66,7 +78,11 @@ function openAiConversionEvent(raw: unknown, req: Request, now: number) {
     }
   }
 
-  const user: Record<string, string> = {};
+  const user: Record<string, string | string[]> = {};
+  if (emailSha256 && OAI_HASH_RE.test(emailSha256)) user.emails_sha256 = [emailSha256];
+  if (typeof c.external_id_sha256 === 'string' && OAI_HASH_RE.test(c.external_id_sha256)) {
+    user.external_ids_sha256 = [c.external_id_sha256];
+  }
   const ip = clientIp(req);
   if (ip) user.ip_address = ip;
   const ua = req.headers.get('user-agent')?.trim();
@@ -252,7 +268,12 @@ export default async function handler(req: Request): Promise<Response> {
   void ua; // reserved for future logging
 
   // 접수된 문의만 ChatGPT 광고 전환 API로 보낸다(실패해도 문의는 성공).
-  const conversion = openAiConversionEvent(body._oai, req, Date.now());
+  const conversion = openAiConversionEvent(
+    body._oai,
+    req,
+    Date.now(),
+    await sha256Hex(rawEmail.trim().toLowerCase()),
+  );
   if (conversion) await sendOpenAiConversion(conversion, env);
 
   return jsonResponse({ ok: true });

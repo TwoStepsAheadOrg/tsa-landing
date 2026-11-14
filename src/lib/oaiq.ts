@@ -17,6 +17,11 @@ function measure(...args: unknown[]) {
   }
 }
 
+/** 각 HTML 머리말과 같은 조건. 다시 init할 때도 debug 값을 그대로 둡니다. */
+function oaiqDebug() {
+  return window.location.hostname !== 'twostepsahead.co.kr' || /[?&]oaiq_debug=1/.test(window.location.search);
+}
+
 function custom(name: string) {
   measure('custom', { type: 'custom' }, { custom_event_name: name });
 }
@@ -32,7 +37,43 @@ export type InquiryConversion = {
   source_url: string;
   oppref?: string;
   obref?: string;
+  external_id_sha256?: string;
 };
+
+/**
+ * 사용자 데이터(https://developers.openai.com/ads/measurement-pixel#send-user-data)
+ * 외부 ID: 각 HTML 머리말이 방문자마다 무작위 ID를 만들어 그 SHA-256 값만 tsa_vid에 저장하고 init에 넣습니다.
+ *         개인정보가 아닌 무작위 값이라 모든 이벤트에 붙고, 서버 이벤트에도 같은 값을 보냅니다.
+ * 이메일: 문의를 보낼 때만, 앞뒤 공백을 지우고 소문자로 바꾼 뒤 SHA-256 값으로 보냅니다(원문 전송 0). 폼에 안내 문구가 있습니다.
+ */
+const HASH_RE = /^[0-9a-f]{64}$/;
+const VISITOR_KEY = 'tsa_vid';
+
+function visitorIdHash() {
+  try {
+    const saved = JSON.parse(window.localStorage.getItem(VISITOR_KEY) ?? 'null');
+    if (saved && typeof saved.h === 'string' && HASH_RE.test(saved.h)) return saved.h as string;
+  } catch {
+    // 저장소를 못 쓰면 외부 ID 없이 보냅니다.
+  }
+  return undefined;
+}
+
+async function sha256Hex(text: string) {
+  const digest = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text));
+  return Array.from(new Uint8Array(digest), (b) => b.toString(16).padStart(2, '0')).join('');
+}
+
+/** 문의 전송과 동시에 시작해 두고, 접수 성공 뒤 trackOpenAiConversion에 넘깁니다. 실패하면 이메일 없이 보냅니다. */
+export async function hashInquiryEmail(email: string): Promise<string | undefined> {
+  const normalized = email.trim().toLowerCase();
+  if (!normalized) return undefined;
+  try {
+    return await sha256Hex(normalized);
+  } catch {
+    return undefined;
+  }
+}
 
 const TOKEN_RE = /^[\x21-\x7e]{1,512}$/;
 const OPPREF_KEY = 'tsa_oppref';
@@ -106,16 +147,27 @@ export function prepareInquiryConversion(contactOnly = false): InquiryConversion
   };
   const oppref = readCookie('__oppref') ?? storedOppref();
   const obref = readCookie('__obref');
+  const externalId = visitorIdHash();
   if (oppref) conversion.oppref = oppref;
   if (obref) conversion.obref = obref;
+  if (externalId) conversion.external_id_sha256 = externalId;
   return conversion;
 }
 
 /**
  * 문의 전송 성공 뒤 한 번만 호출합니다(구글 광고 전환과 같은 시점).
  * 무료 진단 신청 = lead_created, 문의 폼 제출 = 맞춤 이벤트 contact_form_submit. 서버와 같은 event_id.
+ * 사용자 데이터는 init에만 들어가므로, 전환 직전에 외부 ID와 이메일 해시를 함께 넣어 다시 init합니다.
  */
-export function trackOpenAiConversion(conversion: InquiryConversion) {
+export function trackOpenAiConversion(conversion: InquiryConversion, emailSha256?: string) {
+  const user: Record<string, string> = {};
+  if (conversion.external_id_sha256 && HASH_RE.test(conversion.external_id_sha256)) {
+    user.external_id_sha256 = conversion.external_id_sha256;
+  }
+  if (emailSha256 && HASH_RE.test(emailSha256)) user.email_sha256 = emailSha256;
+  if (Object.keys(user).length && typeof window.oaiq === 'function') {
+    window.oaiq('init', { pixelId: OAIQ_PIXEL_ID, debug: oaiqDebug(), user });
+  }
   if (conversion.kind === 'diagnosis') {
     measure('lead_created', { type: 'customer_action' }, { event_id: conversion.event_id });
   } else {
