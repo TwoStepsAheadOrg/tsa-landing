@@ -424,7 +424,13 @@ export const FLOW: { title: string; line: string; owner: Owner; chips: { name: s
     title: "개선",
     line: "다시 보고 고치기",
     owner: "plurank",
-    chips: [{ name: "GEO 최적화" }, { name: "다국어 SEO" }, { name: "월간 리포트" }],
+    chips: [
+      { name: "GEO 최적화" },
+      { name: "다국어 SEO" },
+      { name: "ChatGPT 광고", href: "https://plurank.com/chatgpt-ads" },
+      { name: "데이터 기반 퍼포먼스 광고" },
+      { name: "월간 리포트" },
+    ],
   },
 ];
 
@@ -435,6 +441,7 @@ export const MARKETS: { market: string; channel: string; what: string; owner: Ow
   { market: "한국을 찾은 외국인", channel: "인플루언서 SNS", what: "방한 체험단", owner: "microwave" },
   { market: "해외 온라인 판매", channel: "틱톡샵, 쇼피파이", what: "입점, 스토어 구축과 운영", owner: "microwave" },
   { market: "14개국", channel: "ChatGPT, Perplexity, 네이버 AI 브리핑", what: "AI 검색 분석과 GEO", owner: "plurank" },
+  { market: "데이터 기반 광고", channel: "ChatGPT, 레딧, 메타, 구글 광고", what: "측정 데이터로 세팅하고 최적화하는 퍼포먼스 광고", owner: "plurank" },
 ];
 
 /** 화면에 보이는 질문과 index.html의 FAQPage가 같아야 한다. */
@@ -454,6 +461,10 @@ export const FAQ: { q: string; a: string }[] = [
   {
     q: "어디까지 맡나요?",
     a: "해외 마케팅과 판매 채널 운영을 함께 맡습니다. 진출국 인증과 등록은 변호사 팀원이 먼저 보고, 체크리스트와 서류 준비까지 돕습니다. 법인 설립, 통관, 물류, 현지 유통은 필요시 협의를 거쳐 진행합니다.",
+  },
+  {
+    q: "광고 운영도 맡나요?",
+    a: "네. Plurank가 측정한 데이터를 기준으로 ChatGPT 광고, 레딧 광고, 메타 광고, 구글 광고를 직접 세팅하고 운영합니다. 같은 기준으로 채널마다 고객을 데려오는 비용을 비교해 예산을 옮깁니다.",
   },
   {
     q: "왜 레딧인가요?",
